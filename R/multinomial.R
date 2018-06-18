@@ -2,7 +2,9 @@
 
 #Our test to test differences in multinomial populations (based on Central Limit Theorems for Multinomial Sums):
 
-#' Test two multinomial datasets.
+#' Test two multinomial datasets
+#'
+#' TODO: Add a longer description here.
 #'
 #' @param data A list of two matrices
 #' @return The \code{statistic} and its associated \code{p-value}
@@ -11,7 +13,9 @@
 multinom.test <- function(data){
 
   #TODO: Does this code work for both matrices and vectors?
+  #TODO: Break data into x and y?
   #TODO: Check that two datasets have the same number of columns.
+  #TODO: example: look for multinomial data available in R.
 
   p_hat <- list() #p_hat is each element divided by the row sum.
   sum <- 0

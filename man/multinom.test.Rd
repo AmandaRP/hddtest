@@ -2,7 +2,7 @@
 % Please edit documentation in R/multinomial.R
 \name{multinom.test}
 \alias{multinom.test}
-\title{Test two multinomial datasets.}
+\title{Test two multinomial datasets}
 \usage{
 multinom.test(data)
 }
@@ -13,7 +13,7 @@ multinom.test(data)
 The \code{statistic} and its associated \code{p-value}
 }
 \description{
-Test two multinomial datasets.
+TODO: Add a longer description here.
 }
 \examples{
 
