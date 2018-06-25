@@ -4,7 +4,7 @@
 \alias{multinom.test}
 \title{Test two multinomial datasets}
 \usage{
-multinom.test(data)
+multinom.test(x, y)
 }
 \arguments{
 \item{data}{A list of two matrices}
@@ -14,7 +14,4 @@ The \code{statistic} and its associated \code{p-value}
 }
 \description{
 TODO: Add a longer description here.
-}
-\examples{
-
 }
