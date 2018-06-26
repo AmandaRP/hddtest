@@ -6,10 +6,11 @@
 #'
 #' TODO: Add a longer description here.
 #'
-#' @param data A list of two matrices
+#' @param x,y A list of two matrices
 #' @return The \code{statistic} and its associated \code{p-value}
-#' @example
-#' #TODO: Find count dataset included with R.
+#' @examples
+#' data <- genMultinomialData(null_hyp=TRUE)
+#' multinom.test(x=data[[1]],y=data[[2]])
 multinom.test <- function(x,y){
 
   #TODO: Does this code work for both matrices and vectors?
@@ -43,8 +44,8 @@ multinom.test <- function(x,y){
   stat_numerator <- sum(D)
 
   D_var <- 0
-  for(c in 1:2){
-    D_var <- D_var + (2/n[[c]]^2)* sum(p_hat[[c]]^2 + p_hat[[c]]/n[[c]])
+  for(g in 1:2){
+    D_var <- D_var + (2/n[[g]]^2)* sum(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
   }
   #integer overflow:
   #D_var <- D_var + ( 4/(n[[1]]*n[[2]]) ) * sum(p_hat[[1]] * p_hat[[2]])
@@ -64,104 +65,92 @@ multinom.test <- function(x,y){
 
 
 #################### Generate multinomial data: ###################
-#c=dimension
-#n is parameter for multinomial
-#p is a g by c matrix where g is the number of groups (assume 2 groups for now)
 
 #' Generate multinomial data
 #'
 #' TODO: Add a longer description here.
 #'
-#' @param null_hyp TRUE if null hypthesis is true that the data come from the same distribution
-#' @param c dimension (number of categories). Default 2000.
-#' @param n Vector of length 2 specifying the parameter of the multinomial distribution used to specify the sample size
+#' @param p An optional 2 by k matrix specifying the probabilities of the k categories for each of the two groups.
+#' If defined the rest of the function parameters will not be used. Default value is NULL.
+#' @param null_hyp logical; if TRUE, generate data using the same distribution.
+#' @param k dimension (number of categories). Default 2000.
+#' @param n Vector of length 2 specifying the parameter of the multinomial distribution used to specify the
+#' total number of objects that are put into k bins in the typical multinomial experiment.
 #' @param sample_size A vector of length 2 specifying the number of multinomial vectors to generate
-#' @param p A vector of length c specifying the probabilities of the multinomial distribution. If defined, will be used instead of c. Default value is NULL.
-#' @return A list containing two dataframes eacg having dimension sample_size by c.
-#' @example
-genMultinomialData <- function(null_hyp=TRUE,c=2000,n=c(8000,8000),sample_size=c(30,30),p=NULL,exp1Idx=NULL,exp2Beta=NULL,exp34numZero=NULL){
+#' @param expID Experiment number 1-6
+#' @param alpha =0.45
+#' @param numzero =50
+#' @param beta =0.25
+#' @return A list containing two dataframes each having dimension sample_size by k.
+#' @examples
+#' #Generate data:
+#' X <- genMultinomialData(null_hyp=TRUE)
+#' #Look at the first 10 rows and columns of the first matrix:
+#' X[[1]][1:10,1:10]
+genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample_size=c(30,30),expID=1,alpha=0.45,numzero=50,beta=0.25){
 
   #Generate p if it is not given
   if(is.null(p)){
-    p <- matrix(NA,2,c)
+    p <- matrix(NA,2,k)
     sum <- 0
 
-    #pDist <- "uniform"
-    #pDist <- "step"
-    pDist <- "inverse"
-    #pDist <- "shift"
-    alpha <- 0.45 #Let alpha=1 for original experiment (inverse and shift experiments)
-    #alpha <- 1
-
     #First group:
-    if(pDist=="uniform"){
-      p[1,] <- rep(1/c,times=c)
-    }else if(pDist=="step"){
-      d <- floor(c/2)
+    if(expID==1 | expID==2 | expID==3){  #uniform
+      p[1,] <- rep(1/k,times=k)
+    }else if(expID==4){  #step
+      d <- floor(k/2)
       a <- 8  #constant
       b <- 2  #constant
-      p[1,] <- c( rep(a/c,times=d) , rep(b/c,times=c-d))
+      p[1,] <- c( rep(a/k,times=d) , rep(b/k,times=k-d))
       p[1,] <- p[1,]/sum(p[1,])
-    }else if(pDist=="inverse" | pDist=="shift"){
-      p[1,] <- (1/(1:c)^alpha)
+    }else if(expID==5 | expID==6){  #inverse or shift
+      p[1,] <- (1/(1:k)^alpha)
       p[1,] <- p[1,]/sum(p[1,])
     }
 
     if(null_hyp){ #null hypothesis is TRUE
       p[2,] <- p[1,]
     }else{ #null hypothesis is FALSE
-      if(pDist=="uniform"){
-        if(is.null(exp34numZero)){
-          numzero = 50 #use 50 here for dimension and ratio tests.
-        }else{
-          numzero = exp34numZero
-        }
-
+      if(expID==1){ #uniform
         #Zero some out and make the rest uniform (Exp 4):
-        num_nonzero = c-numzero
+        num_nonzero = k-numzero
         p[2,1:num_nonzero] <- rep(1/num_nonzero,times=num_nonzero)
-        p[2,(num_nonzero+1):c] <- 0
-
-        #Zero some out and add to one probability (exp 3):
-        #p[2,] <- p[1,]
-        #p[2,numzero+1] <- sum(p[2,1:(numzero+1)])
-        #p[2,1:numzero] <- 0
-
+        p[2,(num_nonzero+1):k] <- 0
+      }else if(expID==2){
+        #Zero some out and add to a single probability (exp 3):
+        p[2,] <- p[1,]
+        p[2,numzero+1] <- sum(p[2,1:(numzero+1)])
+        p[2,1:numzero] <- 0
+      }else if(expID==3){
         #Instead of zeroing some out, use a step function.
-        #d <- numzero
-        #a <- 2  #constant
-        #b <- 8  #constant
-        #p[2,] <- c( rep(a/c,times=d) , rep(b/c,times=c-d))
-        #p[2,] <- p[2,]/sum(p[2,])
+        d <- numzero
+        a <- 2  #constant
+        b <- 8  #constant
+        p[2,] <- c( rep(a/k,times=d) , rep(b/k,times=k-d))
+        p[2,] <- p[2,]/sum(p[2,])
 
-      }else if(pDist=="step"){
+      }else if(expID==4){
         p[2,] <- rev(p[1,]) #Reverse order
-      }else if(pDist=="inverse"){
-        #p[2,] <- rev(p[1,]) #Reverse order
-
+      }else if(expID==5){ #inverse
         #Flip order two entries:
         p[2,] <- p[1,]
-        if (is.null(exp1Idx)){
-          index <- 3  #use 3 here for the dimension and ratio tests.
-        }else{
-          index <- exp1Idx
-        }
-        w <- 50
-        #w <- 100
-        p[2,index] <- p[1,w]
-        p[2,w] <- p[1,index]
-        #p[2,1] <- p[1,2]
-        #p[2,2] <- p[1,1]
-      }else if(pDist=="shift"){
-        if(is.null(exp2Beta)){
-          beta <- 0.25
-        }else{
-          beta <- exp2Beta
-        }
-        p[2,] <- 1/(1:c + beta)
+        w <- 1  #use 3 here for the dimension and ratio tests.
+        v <- 50
+        p[2,w] <- p[1,v]
+        p[2,v] <- p[1,w]
+
+      }else if(expID==6){ #shift
+        p[2,] <- 1/(1:k + beta)
         p[2,] <- p[2,]/sum(p[2,])
       }
 
+    }
+  }else{ #check to verify that p is 2xk and the rows sum to 1
+    if(nrow(p) != 2){
+      stop("Error: p must be a 2 by k dimensional matrix.")
+    }
+    if(any(rowSums(p) != 1)){
+      stop("Error: Row sums of p must be equal to 1.")
     }
   }
 
@@ -170,7 +159,6 @@ genMultinomialData <- function(null_hyp=TRUE,c=2000,n=c(8000,8000),sample_size=c
   for(g in 1:2){
     X[[g]] <- t(rmultinom(sample_size[g],n[g],p[g,]))
   }
-  #TODO: What should sample size be?
 
   return(X)
 }
