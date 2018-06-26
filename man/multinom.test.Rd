@@ -7,11 +7,15 @@
 multinom.test(x, y)
 }
 \arguments{
-\item{data}{A list of two matrices}
+\item{x, y}{A list of two matrices}
 }
 \value{
 The \code{statistic} and its associated \code{p-value}
 }
 \description{
 TODO: Add a longer description here.
+}
+\examples{
+data <- genMultinomialData(null_hyp=TRUE)
+multinom.test(x=data[[1]],y=data[[2]])
 }
