@@ -4,10 +4,16 @@
 
 #' Test two multinomial datasets
 #'
-#' TODO: Add a longer description here.
+#' multinom.test peforms the statistical hypothesis test for two multinomial vectors:
+#' \deqn{H_o: P_1 = P_2} vs \deqn{H_1: P_1 \ne P_2}
+#' where \eqn{P_1} and \eqn{P_2} are \eqn{k} dimensional probability vectors corresponding to two multinomial distributions. The test statistic is defined as
+#' \deqn{TODO}
 #'
-#' @param x,y A list of two matrices
-#' @return The \code{statistic} and its associated \code{p-value}
+#'
+#'
+#' @param x,y Vectors of counts or matrices containing multiple count vector observations. x and y must be the same type and dimension.
+#' @return The \code{statistic} and its associated \code{p-value}.
+#' @seealso \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions} by Plunkett and Park at \url{https://arxiv.org/abs/1711.05524}
 #' @examples
 #' data <- genMultinomialData(null_hyp=TRUE)
 #' multinom.test(x=data[[1]],y=data[[2]])
@@ -24,7 +30,7 @@ multinom.test <- function(x,y){
   if( (is.data.frame(x) | is.matrix(x)) & ncol(x) != ncol(y) |
       (is.vector(x) | is.array(x)) & length(x) != length(y)   ){
     stop("x and y should have the same number of categories
-         (i.e. same length if x and y are vectors or same number of columsn if
+         (i.e. same length if x and y are vectors or same number of columns if
          x and y are matrices or dataframes)")
   }
 
@@ -68,7 +74,16 @@ multinom.test <- function(x,y){
 
 #' Generate multinomial data
 #'
-#' TODO: Add a longer description here.
+#' Generate two sets of multinomially distributed vectors. Useful for hypothesis testing simulations.
+#' Six different experiments with different probability vectors are available in addition to user-specified probability vector \code{p}:
+#' \itemize{
+#' \item Experiment1: TODO
+#' \item Experiment2: TODO
+#' \item Experiment3: TODO
+#' \item Experiment4: TODO
+#' \item Experiment5: TODO
+#' \item Experiment6: TODO
+#' }
 #'
 #' @param p An optional 2 by k matrix specifying the probabilities of the k categories for each of the two groups.
 #' If defined the rest of the function parameters will not be used. Default value is NULL.
@@ -78,9 +93,9 @@ multinom.test <- function(x,y){
 #' total number of objects that are put into k bins in the typical multinomial experiment.
 #' @param sample_size A vector of length 2 specifying the number of multinomial vectors to generate
 #' @param expID Experiment number 1-6
-#' @param alpha =0.45
-#' @param numzero =50
-#' @param beta =0.25
+#' @param alpha Default is 0.45. Used for experiments 5 and 6.
+#' @param numzero Default is 50. Used for experiments 1-3.
+#' @param beta Default is 0.25. TODO
 #' @return A list containing two dataframes each having dimension sample_size by k.
 #' @examples
 #' #Generate data:

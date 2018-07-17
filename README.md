@@ -3,7 +3,7 @@
 hddtest
 =======
 
-The goal of hddtest is to ...
+Functions for hypothesis testing of high dimensional discrete data. Currently functions for multinomially distributed data are available. Functions for multivariate binary data will be added in the future.
 
 Installation
 ------------
@@ -18,8 +18,9 @@ devtools::install_github("AmandaRP/hddtest")
 Example
 -------
 
-This is a basic example which shows you how to solve a common problem:
+Generate two multinomial count vectors and test whether they come from the same underlying distribution:
 
 ``` r
-## basic example code
+#data <- genMultinomialData(null_hyp=TRUE)
+#multinom.test(x=data[[1]],y=data[[2]])
 ```

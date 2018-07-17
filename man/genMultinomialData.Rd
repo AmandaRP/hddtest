@@ -23,17 +23,26 @@ total number of objects that are put into k bins in the typical multinomial expe
 
 \item{expID}{Experiment number 1-6}
 
-\item{alpha}{=0.45}
+\item{alpha}{Default is 0.45. Used for experiments 5 and 6.}
 
-\item{numzero}{=50}
+\item{numzero}{Default is 50. Used for experiments 1-3.}
 
-\item{beta}{=0.25}
+\item{beta}{Default is 0.25. TODO}
 }
 \value{
 A list containing two dataframes each having dimension sample_size by k.
 }
 \description{
-TODO: Add a longer description here.
+Generate two sets of multinomially distributed vectors. Useful for hypothesis testing simulations.
+Six different experiments with different probability vectors are available in addition to user-specified probability vector \code{p}:
+\itemize{
+\item Experiment1: TODO
+\item Experiment2: TODO
+\item Experiment3: TODO
+\item Experiment4: TODO
+\item Experiment5: TODO
+\item Experiment6: TODO
+}
 }
 \examples{
 #Generate data:

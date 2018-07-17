@@ -7,7 +7,7 @@
 \title{hddtest: A package for testing two multinomial datasets.}
 \description{
 The hdd test package provides the following functions:
-multinom.test, etc, etc.
+multinom.test, genMultinomialData, etc.
 }
 \section{hddtest functions}{
 
