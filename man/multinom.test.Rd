@@ -7,15 +7,28 @@
 multinom.test(x, y)
 }
 \arguments{
-\item{x, y}{A list of two matrices}
+\item{x, y}{Vectors of counts or matrices containing multiple count vector observations. x and y must be the same type and dimension. If x and y are matrices (or data frames), the ith row of x will be tested against the ith row of y for all i in [1,nrow(x)].}
 }
 \value{
-The \code{statistic} and its associated \code{p-value}
+The \code{statistic} and its associated \code{p-value}.
 }
 \description{
-TODO: Add a longer description here.
+multinom.test peforms the statistical hypothesis test for two multinomial vectors:
+\deqn{H_o: P_1 = P_2} vs \deqn{H_1: P_1 \ne P_2}
+where \eqn{P_1} and \eqn{P_2} are \eqn{k} dimensional probability vectors corresponding to two multinomial distributions. The test statistic is defined as
+\deqn{TODO}
 }
 \examples{
-data <- genMultinomialData(null_hyp=TRUE)
-multinom.test(x=data[[1]],y=data[[2]])
+#Generate data from two different distributions:
+data <- genMultinomialData(null_hyp=FALSE)
+
+#Perform test:
+result <- multinom.test(x=data[[1]],y=data[[2]])
+result
+
+#Calculate power of test:
+mean(result$pvalue)
+}
+\seealso{
+Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, \url{arxiv.org/abs/1711.05524}
 }
