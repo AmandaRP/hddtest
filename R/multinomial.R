@@ -11,15 +11,23 @@
 #'
 #'
 #'
-#' @param x,y Vectors of counts or matrices containing multiple count vector observations. x and y must be the same type and dimension.
+#' @param x,y Vectors of counts or matrices containing multiple count vector observations. x and y must be the same type and dimension. If x and y are matrices (or data frames), the ith row of x will be tested against the ith row of y for all i in [1,nrow(x)].
 #' @return The \code{statistic} and its associated \code{p-value}.
-#' @seealso \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions} by Plunkett and Park at \url{https://arxiv.org/abs/1711.05524}
+#' @seealso
+#' Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, \url{arxiv.org/abs/1711.05524}
 #' @examples
-#' data <- genMultinomialData(null_hyp=TRUE)
-#' multinom.test(x=data[[1]],y=data[[2]])
+#' #Generate data from two different distributions:
+#' data <- genMultinomialData(null_hyp=FALSE)
+#'
+#' #Perform test:
+#' result <- multinom.test(x=data[[1]],y=data[[2]])
+#' result
+#'
+#' #Calculate power of test:
+#' mean(result$pvalue)
 multinom.test <- function(x,y){
 
-  #TODO: Does this code work for both matrices and vectors?
+  #TODO: Finish: If given two matrices, need to test rows separately.
 
   #check that x and y are the same structures:
   if(class(x) != class(y)){
@@ -34,6 +42,10 @@ multinom.test <- function(x,y){
          x and y are matrices or dataframes)")
   }
 
+  if((is.data.frame(x) | is.matrix(x)) & nrow(x)>1 ){
+    multipleSamples <- TRUE
+  }
+
   data <- list(x,y)
 
   p_hat <- list() #p_hat is each element divided by the row sum.
@@ -41,21 +53,34 @@ multinom.test <- function(x,y){
   n <- list()
 
   for(g in 1:2){ #Two groups
-    n[[g]] <- sum(data[[g]])
+
+    if(multipleSamples){
+      n[[g]] <- rowSums(data[[g]])
+    }else{
+      n[[g]] <- sum(data[[g]])
+    }
+
     p_hat[[g]] <- data[[g]]/n[[g]]
   }
 
   D <- (p_hat[[1]]-p_hat[[2]])^2 - p_hat[[1]]/n[[1]] - p_hat[[2]]/n[[2]]
 
-  stat_numerator <- sum(D)
+  if(multipleSamples){
+    stat_numerator <- rowSums(D)
+  }else{
+    stat_numerator <- sum(D)
+  }
 
   D_var <- 0
-  for(g in 1:2){
-    D_var <- D_var + (2/n[[g]]^2)* sum(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
+  if(multipleSamples){
+    #TODO
+  }else{
+    for(g in 1:2){
+      D_var <- D_var + (2/n[[g]]^2)* sum(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
+    }
+    #integer overflow:
+    stat_var <- D_var + ( 4 * sum(p_hat[[1]] * p_hat[[2]]) /n[[1]] ) /n[[2]]
   }
-  #integer overflow:
-  #D_var <- D_var + ( 4/(n[[1]]*n[[2]]) ) * sum(p_hat[[1]] * p_hat[[2]])
-  stat_var <- D_var + ( 4 * sum(p_hat[[1]] * p_hat[[2]]) /n[[1]] ) /n[[2]]
 
   stat_denominator <- sqrt(stat_var)
 
