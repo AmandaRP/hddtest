@@ -14,7 +14,7 @@
 #' @param x,y Vectors of counts or matrices containing multiple count vector observations. x and y must be the same type and dimension. If x and y are matrices (or data frames), the ith row of x will be tested against the ith row of y for all i in [1,nrow(x)].
 #' @return The \code{statistic} and its associated \code{p-value}.
 #' @seealso
-#' Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, \url{arxiv.org/abs/1711.05524}
+#' Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, TEST, \url{https://doi.org/10.1007/s11749-018-0600-8}
 #' @examples
 #' #Generate data from two different distributions:
 #' data <- genMultinomialData(null_hyp=FALSE)

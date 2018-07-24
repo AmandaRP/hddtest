@@ -30,5 +30,5 @@ result
 mean(result$pvalue)
 }
 \seealso{
-Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, \url{arxiv.org/abs/1711.05524}
+Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, TEST, \url{https://doi.org/10.1007/s11749-018-0600-8}
 }

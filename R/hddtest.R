@@ -11,9 +11,10 @@
 #'
 #' @section References:
 #' \itemize{
-#' \item Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, \url{arxiv.org/abs/1711.05524}
+#' \item Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, TEST, \url{https://doi.org/10.1007/s11749-018-0600-8}
 #' \item Amanda Plunkett & Junyong Park (2017) \emph{Two-sample tests for sparse high-dimensional binary data}, Communications in Statistics - Theory and Methods, 46:22, 11181-11193
 #' }
 #' @docType package
 #' @name hddtest
 NULL
+
