@@ -38,4 +38,6 @@ data <- genMultinomialData(null_hyp=TRUE)
 
 ## References
 
-[1] Plunkett, A. & Park, J. TEST (2018). https://doi.org/10.1007/s11749-018-0600-8
+[1] Plunkett, A. & Park, J. (2018) Two-sample test for sparse high-dimensional multinomial distributions, TEST, doi.org/10.1007/s11749-018-0600-8
+
+[2] Plunkett, A. & Park, J. (2017) Two-sample tests for sparse high-dimensional binary data, Communications in Statistics - Theory and Methods, 46:22, 11181-11193, DOI: 10.1080/03610926.2016.1260743
