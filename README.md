@@ -1,5 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+    ## Loading hddtest
+
 hddtest
 =======
 
@@ -21,6 +23,6 @@ Example
 Generate two multinomial count vectors and test whether they come from the same underlying distribution:
 
 ``` r
-#data <- genMultinomialData(null_hyp=TRUE)
+data <- genMultinomialData(null_hyp=TRUE)
 #multinom.test(x=data[[1]],y=data[[2]])
 ```

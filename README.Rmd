@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+devtools::load_all()
 ```
 
 # hddtest
@@ -30,6 +31,6 @@ devtools::install_github("AmandaRP/hddtest")
 Generate two multinomial count vectors and test whether they come from the same underlying distribution:
 
 ```{r example}
-#data <- genMultinomialData(null_hyp=TRUE)
-#multinom.test(x=data[[1]],y=data[[2]])
+data <- genMultinomialData(null_hyp=TRUE)
+multinom.test(x=data[[1]],y=data[[2]])
 ```
