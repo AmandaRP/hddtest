@@ -5,7 +5,7 @@
 hddtest
 =======
 
-Functions for hypothesis testing of high dimensional discrete data. Currently functions for multinomially distributed data are available. Functions for multivariate binary data will be added in the future.
+Functions for hypothesis testing of high dimensional discrete data. Currently functions for multinomially distributed data, as described in \[1\], are available. Functions for multivariate binary data will be added in the future.
 
 Installation
 ------------
@@ -13,7 +13,7 @@ Installation
 You can install hddtest from github with:
 
 ``` r
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("AmandaRP/hddtest")
 ```
 
@@ -26,3 +26,8 @@ Generate two multinomial count vectors and test whether they come from the same 
 data <- genMultinomialData(null_hyp=TRUE)
 #multinom.test(x=data[[1]],y=data[[2]])
 ```
+
+References
+----------
+
+\[1\] Plunkett, A. & Park, J. TEST (2018). <https://doi.org/10.1007/s11749-018-0600-8>
