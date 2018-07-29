@@ -33,7 +33,7 @@ multinom.test <- function(x,y){
   }
 
   #Check that the same number of categories are defined for x and y:
-  if( ((is.data.frame(x) || is.matrix(x)) && ncol(x) != ncol(y)) ||
+  if( ((is.data.frame(x) || is.matrix(x)) && any(dim(x) != dim(y))  ) ||
       ((is.vector(x)     || is.array(x))  && length(x) != length(y)) ){
     stop("x and y should have the same number of categories
      (i.e. same length if x and y are vectors or same number of columns if
