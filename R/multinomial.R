@@ -44,6 +44,8 @@ multinom.test <- function(x,y){
 
   if((is.data.frame(x) | is.matrix(x)) & nrow(x)>1 ){
     multipleSamples <- TRUE
+  }else{
+    multipleSamples <- FALSE
   }
 
   data <- list(x,y)
@@ -72,15 +74,15 @@ multinom.test <- function(x,y){
   }
 
   D_var <- 0
-  if(multipleSamples){
+#  if(multipleSamples){
     #TODO
-  }else{
+#  }else{
     for(g in 1:2){
       D_var <- D_var + (2/n[[g]]^2)* sum(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
     }
     #integer overflow:
     stat_var <- D_var + ( 4 * sum(p_hat[[1]] * p_hat[[2]]) /n[[1]] ) /n[[2]]
-  }
+#  }
 
   stat_denominator <- sqrt(stat_var)
 
@@ -99,7 +101,7 @@ multinom.test <- function(x,y){
 
 #' Generate multinomial data
 #'
-#' Generate two sets of multinomially distributed vectors. Useful for hypothesis testing simulations.
+#' Generate two sets of multinomially distributed vectors using rmultinom. Useful for hypothesis testing simulations.
 #' Six different experiments with different probability vectors are available in addition to user-specified probability vector \code{p}:
 #' \itemize{
 #' \item Experiment1: TODO
@@ -114,9 +116,9 @@ multinom.test <- function(x,y){
 #' If defined the rest of the function parameters will not be used. Default value is NULL.
 #' @param null_hyp logical; if TRUE, generate data using the same distribution.
 #' @param k dimension (number of categories). Default 2000.
-#' @param n Vector of length 2 specifying the parameter of the multinomial distribution used to specify the
+#' @param n Vector of length 2 specifying the parameter of each multinomial distribution used to specify the
 #' total number of objects that are put into k bins in the typical multinomial experiment.
-#' @param sample_size A vector of length 2 specifying the number of multinomial vectors to generate
+#' @param sample_size An integer specifying the number of multinomial vectors to generate for each of the two groups
 #' @param expID Experiment number 1-6
 #' @param alpha Default is 0.45. Used for experiments 5 and 6.
 #' @param numzero Default is 50. Used for experiments 1-3.
@@ -127,7 +129,7 @@ multinom.test <- function(x,y){
 #' X <- genMultinomialData(null_hyp=TRUE)
 #' #Look at the first 10 rows and columns of the first matrix:
 #' X[[1]][1:10,1:10]
-genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample_size=c(30,30),expID=1,alpha=0.45,numzero=50,beta=0.25){
+genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample_size=1,expID=1,alpha=0.45,numzero=50,beta=0.25){
 
   #Generate p if it is not given
   if(is.null(p)){
@@ -197,7 +199,7 @@ genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample
   #Generate data
   X <- list()
   for(g in 1:2){
-    X[[g]] <- t(rmultinom(sample_size[g],n[g],p[g,]))
+    X[[g]] <- t(rmultinom(sample_size,n[g],p[g,]))
   }
 
   return(X)

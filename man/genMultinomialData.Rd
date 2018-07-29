@@ -5,7 +5,7 @@
 \title{Generate multinomial data}
 \usage{
 genMultinomialData(p = NULL, null_hyp = TRUE, k = 2000, n = c(8000,
-  8000), sample_size = c(30, 30), expID = 1, alpha = 0.45, numzero = 50,
+  8000), sample_size = 1, expID = 1, alpha = 0.45, numzero = 50,
   beta = 0.25)
 }
 \arguments{
@@ -16,10 +16,10 @@ If defined the rest of the function parameters will not be used. Default value i
 
 \item{k}{dimension (number of categories). Default 2000.}
 
-\item{n}{Vector of length 2 specifying the parameter of the multinomial distribution used to specify the
+\item{n}{Vector of length 2 specifying the parameter of each multinomial distribution used to specify the
 total number of objects that are put into k bins in the typical multinomial experiment.}
 
-\item{sample_size}{A vector of length 2 specifying the number of multinomial vectors to generate}
+\item{sample_size}{An integer specifying the number of multinomial vectors to generate for each of the two groups}
 
 \item{expID}{Experiment number 1-6}
 
@@ -33,7 +33,7 @@ total number of objects that are put into k bins in the typical multinomial expe
 A list containing two dataframes each having dimension sample_size by k.
 }
 \description{
-Generate two sets of multinomially distributed vectors. Useful for hypothesis testing simulations.
+Generate two sets of multinomially distributed vectors using rmultinom. Useful for hypothesis testing simulations.
 Six different experiments with different probability vectors are available in addition to user-specified probability vector \code{p}:
 \itemize{
 \item Experiment1: TODO
