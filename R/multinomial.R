@@ -27,22 +27,21 @@
 #' mean(result$pvalue)
 multinom.test <- function(x,y){
 
-  #TODO: Finish: If given two matrices, need to test rows separately.
-
   #check that x and y are the same structures:
   if(class(x) != class(y)){
     stop("x and y must be the same class")
   }
 
   #Check that the same number of categories are defined for x and y:
-  if( (is.data.frame(x) | is.matrix(x)) & ncol(x) != ncol(y) |
-      (is.vector(x) | is.array(x)) & length(x) != length(y)   ){
+  if( ((is.data.frame(x) || is.matrix(x)) && ncol(x) != ncol(y)) ||
+      ((is.vector(x)     || is.array(x))  && length(x) != length(y)) ){
     stop("x and y should have the same number of categories
-         (i.e. same length if x and y are vectors or same number of columns if
+     (i.e. same length if x and y are vectors or same number of columns if
          x and y are matrices or dataframes)")
   }
 
-  if((is.data.frame(x) | is.matrix(x)) & nrow(x)>1 ){
+
+  if((is.data.frame(x) || is.matrix(x)) && nrow(x)>1  ){
     multipleSamples <- TRUE
   }else{
     multipleSamples <- FALSE
@@ -73,16 +72,23 @@ multinom.test <- function(x,y){
     stat_numerator <- sum(D)
   }
 
-  D_var <- 0
-#  if(multipleSamples){
-    #TODO
-#  }else{
+
+  if(multipleSamples){
+    D_var <- rep(0,nrow(x))
+    for(g in 1:2){
+      D_var <- D_var + (2/n[[g]]^2)* rowSums(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
+    }
+    #integer overflow:
+    stat_var <- D_var + ( 4 * rowSums(p_hat[[1]] * p_hat[[2]]) /n[[1]] ) /n[[2]]
+    #  }
+  }else{
+    D_var <- 0
     for(g in 1:2){
       D_var <- D_var + (2/n[[g]]^2)* sum(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
     }
     #integer overflow:
     stat_var <- D_var + ( 4 * sum(p_hat[[1]] * p_hat[[2]]) /n[[1]] ) /n[[2]]
-#  }
+  }
 
   stat_denominator <- sqrt(stat_var)
 
@@ -129,7 +135,7 @@ multinom.test <- function(x,y){
 #' X <- genMultinomialData(null_hyp=TRUE)
 #' #Look at the first 10 rows and columns of the first matrix:
 #' X[[1]][1:10,1:10]
-genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample_size=1,expID=1,alpha=0.45,numzero=50,beta=0.25){
+genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample_size=30,expID=5,alpha=0.45,numzero=50,beta=0.25){
 
   #Generate p if it is not given
   if(is.null(p)){
@@ -176,7 +182,7 @@ genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample
       }else if(expID==5){ #inverse
         #Flip order two entries:
         p[2,] <- p[1,]
-        w <- 1  #use 3 here for the dimension and ratio tests.
+        w <- 3  #use 3 here for the dimension and ratio tests.
         v <- 50
         p[2,w] <- p[1,v]
         p[2,v] <- p[1,w]
