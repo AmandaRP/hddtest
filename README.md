@@ -26,10 +26,10 @@ Generate two multinomial count vectors and test whether they come from the same 
 data <- genMultinomialData(null_hyp=FALSE,sample_size = 1)
 multinom.test(x=data[[1]],y=data[[2]])
 #> $statistic
-#> [1] 0.5363229
+#> [1] 1.897529
 #> 
 #> $pvalue
-#> [1] 0.2958677
+#> [1] 0.02887905
 ```
 
 References
