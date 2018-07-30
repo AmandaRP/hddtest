@@ -5,7 +5,7 @@
 \title{Generate multinomial data}
 \usage{
 genMultinomialData(p = NULL, null_hyp = TRUE, k = 2000, n = c(8000,
-  8000), sample_size = 1, expID = 1, alpha = 0.45, numzero = 50,
+  8000), sample_size = 30, expID = 5, alpha = 0.45, numzero = 50,
   beta = 0.25)
 }
 \arguments{
