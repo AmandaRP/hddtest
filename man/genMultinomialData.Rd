@@ -10,22 +10,23 @@ genMultinomialData(p = NULL, null_hyp = TRUE, k = 2000, n = c(8000,
 }
 \arguments{
 \item{p}{An optional 2 by k matrix specifying the probabilities of the k categories for each of the two groups.
+Each row of p must sum to 1.
 If defined the rest of the function parameters will not be used. Default value is NULL.}
 
-\item{null_hyp}{logical; if TRUE, generate data using the same distribution.}
+\item{null_hyp}{logical; if TRUE, generate data using the same distribution. Default value is TRUE.}
 
-\item{k}{dimension (number of categories). Default 2000.}
+\item{k}{integer representing dimension (number of categories). Default 2000.}
 
 \item{n}{Vector of length 2 specifying the parameter of each multinomial distribution used to specify the
 total number of objects that are put into k bins in the typical multinomial experiment.}
 
-\item{sample_size}{An integer specifying the number of multinomial vectors to generate for each of the two groups}
+\item{sample_size}{An integer specifying the number of random vectors to generate for each of the two groups}
 
 \item{expID}{Experiment number 1-6}
 
-\item{alpha}{Default is 0.45. Used for experiments 5 and 6.}
+\item{alpha}{Number between 0 and 1. Default is 0.45. Used for experiments 5 and 6.}
 
-\item{numzero}{Default is 50. Used for experiments 1-3.}
+\item{numzero}{Integer between 1 and k-1. Default is 50. Used for experiments 1-3.}
 
 \item{beta}{Default is 0.25. TODO}
 }
@@ -47,6 +48,11 @@ Six different experiments with different probability vectors are available in ad
 \examples{
 #Generate data:
 X <- genMultinomialData(null_hyp=TRUE)
-#Look at the first 10 rows and columns of the first matrix:
-X[[1]][1:10,1:10]
+
+#Dimension of generated datasets:
+dim(X[[1]])
+dim(X[[2]])
+
+Summary of first three columns of the first dataset:
+summary(X[[1]][,1:3])
 }

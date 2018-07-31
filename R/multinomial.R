@@ -122,22 +122,28 @@ multinom.test <- function(x,y){
 #' }
 #'
 #' @param p An optional 2 by k matrix specifying the probabilities of the k categories for each of the two groups.
+#' Each row of p must sum to 1.
 #' If defined the rest of the function parameters will not be used. Default value is NULL.
-#' @param null_hyp logical; if TRUE, generate data using the same distribution.
-#' @param k dimension (number of categories). Default 2000.
+#' @param null_hyp logical; if TRUE, generate data using the same distribution. Default value is TRUE.
+#' @param k integer representing dimension (number of categories). Default 2000.
 #' @param n Vector of length 2 specifying the parameter of each multinomial distribution used to specify the
 #' total number of objects that are put into k bins in the typical multinomial experiment.
-#' @param sample_size An integer specifying the number of multinomial vectors to generate for each of the two groups
+#' @param sample_size An integer specifying the number of random vectors to generate for each of the two groups
 #' @param expID Experiment number 1-6
-#' @param alpha Default is 0.45. Used for experiments 5 and 6.
-#' @param numzero Default is 50. Used for experiments 1-3.
+#' @param alpha Number between 0 and 1. Default is 0.45. Used for experiments 5 and 6.
+#' @param numzero Integer between 1 and k-1. Default is 50. Used for experiments 1-3.
 #' @param beta Default is 0.25. TODO
-#' @return A list containing two dataframes each having dimension sample_size by k.
+#' @return A list containing two matrices each having dimension sample_size by k.
 #' @examples
 #' #Generate data:
 #' X <- genMultinomialData(null_hyp=TRUE)
-#' #Look at the first 10 rows and columns of the first matrix:
-#' X[[1]][1:10,1:10]
+#'
+#' #Dimension of generated datasets:
+#' dim(X[[1]])
+#' dim(X[[2]])
+#'
+#' Summary of first three columns of the first dataset:
+#' summary(X[[1]][,1:3])
 genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample_size=30,expID=5,alpha=0.45,numzero=50,beta=0.25){
 
   #Generate p if it is not given
