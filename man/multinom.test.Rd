@@ -19,14 +19,18 @@ where \eqn{P_1} and \eqn{P_2} are \eqn{k} dimensional probability vectors corres
 \deqn{TODO}
 }
 \examples{
-#Generate data from two different distributions:
-data <- genMultinomialData(null_hyp=FALSE)
+#Generate two vectors from two different distributions:
+data <- genMultinomialData(null_hyp=FALSE,sample_size=1)
 
 #Perform test:
-result <- multinom.test(x=data[[1]],y=data[[2]])
-result
+multinom.test(x=data[[1]],y=data[[2]])
 
-#Calculate power of test:
+#Generate 1000 vectors from each of two different distributions:
+data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
+
+#Perform test (compare the ith row of x to the ith row of y for rows):
+result <- multinom.test(x=data[[1]],y=data[[2]])
+#return power of test:
 mean(result$pvalue)
 }
 \seealso{

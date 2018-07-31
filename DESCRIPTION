@@ -6,9 +6,8 @@ Authors@R: c(
     person("Amanda", "Plunkett", email = "amanplunkett@gmail.com", role=c("aut","cre")),
     person("Junyong", "Park", email = "junyongpark@umbc.edu", role="aut"))
 Description: Methods for two sample hypothesis testing of multinomial 
-    and multivariate binary data. Implementation of the methods described in 
-    "Two-sample tests for sparse high-dimensional binary data" (2017) and "Two-Sample Test for Sparse High Dimensional Multinomial Distributions" (2018) by  
-    Amanda Plunkett & Junyong Park.
+    and multivariate binary data as described in described in "Two-sample tests for sparse high-dimensional binary data" (2017) and "Two-Sample Test for Sparse High Dimensional Multinomial Distributions" (2018) by  
+    Amanda Plunkett & Junyong Park. Approach especially designed for sparse data.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

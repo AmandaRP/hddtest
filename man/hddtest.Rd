@@ -6,7 +6,7 @@
 \alias{hddtest-package}
 \title{hddtest: Two-sample hypothesis testing for high dimensional discrete disributions}
 \description{
-The hdd test package provides functionality for two-sample hypothesis testing of high dimensional discrete data. Specifically, testing of multinomial and multivariate binary data are supported.
+The hdd test package provides functionality for two-sample hypothesis testing of high dimensional discrete data. Currently, testing of multinomial data is supported.
 }
 \section{hddtest functions}{
 

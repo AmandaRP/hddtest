@@ -16,15 +16,20 @@
 #' @seealso
 #' Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, TEST, \url{https://doi.org/10.1007/s11749-018-0600-8}
 #' @examples
-#' #Generate data from two different distributions:
-#' data <- genMultinomialData(null_hyp=FALSE)
+#' #Generate two vectors from two different distributions:
+#' data <- genMultinomialData(null_hyp=FALSE,sample_size=1)
 #'
 #' #Perform test:
-#' result <- multinom.test(x=data[[1]],y=data[[2]])
-#' result
+#' multinom.test(x=data[[1]],y=data[[2]])
 #'
-#' #Calculate power of test:
+#' #Generate 1000 vectors from each of two different distributions:
+#' data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
+#'
+#' #Perform test (compare the ith row of x to the ith row of y for rows):
+#' result <- multinom.test(x=data[[1]],y=data[[2]])
+#' #return power of test:
 #' mean(result$pvalue)
+
 multinom.test <- function(x,y){
 
   #check that x and y are the same structures:
