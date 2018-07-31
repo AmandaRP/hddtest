@@ -7,16 +7,19 @@
 multinom.test(x, y)
 }
 \arguments{
-\item{x, y}{Vectors of counts or matrices containing multiple count vector observations. x and y must be the same type and dimension. If x and y are matrices (or data frames), the ith row of x will be tested against the ith row of y for all i in [1,nrow(x)].}
+\item{x, y}{Integer vectors (or matrices/dataframes containing multiple integer vector observations as rows).
+x and y must be the same type and dimension. If x and y are matrices (or dataframes), the ith row
+of x will be tested against the ith row of y for all i in 1..nrow(x).}
 }
 \value{
 The \code{statistic} and its associated \code{p-value}.
+If x and y are either matrices or dataframes, a \code{statistic} and \code{p-value} will be returned
+for each row.
 }
 \description{
-multinom.test peforms the statistical hypothesis test for two multinomial vectors:
-\deqn{H_o: P_1 = P_2} vs \deqn{H_1: P_1 \ne P_2}
-where \eqn{P_1} and \eqn{P_2} are \eqn{k} dimensional probability vectors corresponding to two multinomial distributions. The test statistic is defined as
-\deqn{TODO}
+Peforms the test for two multinomial vectors
+testing \eqn{H_o:} the underlying multinomial probability vectors are the same
+vs. \eqn{H_1:} they are different.
 }
 \examples{
 #Generate two vectors from two different distributions:
@@ -28,9 +31,9 @@ multinom.test(x=data[[1]],y=data[[2]])
 #Generate 1000 vectors from each of two different distributions:
 data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
 
-#Perform test (compare the ith row of x to the ith row of y for rows):
+#Perform test (compare the ith row of x to the ith row of y for all rows):
 result <- multinom.test(x=data[[1]],y=data[[2]])
-#return power of test:
+#Return power of test:
 mean(result$pvalue)
 }
 \seealso{

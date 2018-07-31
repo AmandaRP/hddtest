@@ -1,18 +1,16 @@
 
-
-#Our test to test differences in multinomial populations (based on Central Limit Theorems for Multinomial Sums):
-
 #' Test two multinomial datasets
 #'
-#' multinom.test peforms the statistical hypothesis test for two multinomial vectors:
-#' \deqn{H_o: P_1 = P_2} vs \deqn{H_1: P_1 \ne P_2}
-#' where \eqn{P_1} and \eqn{P_2} are \eqn{k} dimensional probability vectors corresponding to two multinomial distributions. The test statistic is defined as
-#' \deqn{TODO}
+#' Peforms the test for two multinomial vectors
+#' testing \eqn{H_o:} the underlying multinomial probability vectors are the same
+#' vs. \eqn{H_1:} they are different.
 #'
-#'
-#'
-#' @param x,y Vectors of counts or matrices containing multiple count vector observations. x and y must be the same type and dimension. If x and y are matrices (or data frames), the ith row of x will be tested against the ith row of y for all i in [1,nrow(x)].
+#' @param x,y Integer vectors (or matrices/dataframes containing multiple integer vector observations as rows).
+#' x and y must be the same type and dimension. If x and y are matrices (or dataframes), the ith row
+#' of x will be tested against the ith row of y for all i in 1..nrow(x).
 #' @return The \code{statistic} and its associated \code{p-value}.
+#' If x and y are either matrices or dataframes, a \code{statistic} and \code{p-value} will be returned
+#' for each row.
 #' @seealso
 #' Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, TEST, \url{https://doi.org/10.1007/s11749-018-0600-8}
 #' @examples
@@ -25,9 +23,9 @@
 #' #Generate 1000 vectors from each of two different distributions:
 #' data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
 #'
-#' #Perform test (compare the ith row of x to the ith row of y for rows):
+#' #Perform test (compare the ith row of x to the ith row of y for all rows):
 #' result <- multinom.test(x=data[[1]],y=data[[2]])
-#' #return power of test:
+#' #Return power of test:
 #' mean(result$pvalue)
 
 multinom.test <- function(x,y){
