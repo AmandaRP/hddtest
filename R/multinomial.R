@@ -113,11 +113,11 @@ multinom.test <- function(x,y){
 #' Generate two sets of multinomially distributed vectors using rmultinom. Useful for hypothesis testing simulations.
 #' Six different experiments with different probability vectors are available in addition to user-specified probability vector \code{p}:
 #' \itemize{
-#' \item Experiment1: TODO
-#' \item Experiment2: TODO
-#' \item Experiment3: TODO
-#' \item Experiment4: TODO
-#' \item Experiment5: TODO
+#' \item Experiment1: \eqn{p_{1i} = \frac{1/i^\alpha}{\sum_1^k 1/i^\alpha}}
+#' \item Experiment2:
+#' \item Experiment3: \eqn{p_{1i} = 1/k, p_{2i} = 0} for \eqn{i \in [1,b]} and \eqn{p_{2,b+1}= \sum_{1}^{b+1} p_{2i} }
+#' \item Experiment4: \eqn{p_{1i} = 1/k, p_{2i} = 0} for \eqn{i \in [1,b]} and \eqn{p_{2i} = 1/(k − b)}  for \eqn{i > b}
+#' \item Experiment5:
 #' \item Experiment6: TODO
 #' }
 #'
@@ -152,43 +152,18 @@ genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample
     sum <- 0
 
     #First group:
-    if(expID==1 | expID==2 | expID==3){  #uniform
-      p[1,] <- rep(1/k,times=k)
-    }else if(expID==4){  #step
-      d <- floor(k/2)
-      a <- 8  #constant
-      b <- 2  #constant
-      p[1,] <- c( rep(a/k,times=d) , rep(b/k,times=k-d))
-      p[1,] <- p[1,]/sum(p[1,])
-    }else if(expID==5 | expID==6){  #inverse or shift
+    if(expID==1 | expID==2 ){  #inverse or shift
       p[1,] <- (1/(1:k)^alpha)
       p[1,] <- p[1,]/sum(p[1,])
+
+    }else if(expID==3 | expID==4){  #uniform
+      p[1,] <- rep(1/k,times=k)
     }
 
     if(null_hyp){ #null hypothesis is TRUE
       p[2,] <- p[1,]
     }else{ #null hypothesis is FALSE
-      if(expID==1){ #uniform
-        #Zero some out and make the rest uniform (Exp 4):
-        num_nonzero = k-numzero
-        p[2,1:num_nonzero] <- rep(1/num_nonzero,times=num_nonzero)
-        p[2,(num_nonzero+1):k] <- 0
-      }else if(expID==2){
-        #Zero some out and add to a single probability (exp 3):
-        p[2,] <- p[1,]
-        p[2,numzero+1] <- sum(p[2,1:(numzero+1)])
-        p[2,1:numzero] <- 0
-      }else if(expID==3){
-        #Instead of zeroing some out, use a step function.
-        d <- numzero
-        a <- 2  #constant
-        b <- 8  #constant
-        p[2,] <- c( rep(a/k,times=d) , rep(b/k,times=k-d))
-        p[2,] <- p[2,]/sum(p[2,])
-
-      }else if(expID==4){
-        p[2,] <- rev(p[1,]) #Reverse order
-      }else if(expID==5){ #inverse
+      if(expID==1){ #inverse
         #Flip order two entries:
         p[2,] <- p[1,]
         w <- 3  #use 3 here for the dimension and ratio tests.
@@ -196,9 +171,23 @@ genMultinomialData <- function(p=NULL,null_hyp=TRUE,k=2000,n=c(8000,8000),sample
         p[2,w] <- p[1,v]
         p[2,v] <- p[1,w]
 
-      }else if(expID==6){ #shift
+      }else if(expID==2){ #shift
         p[2,] <- 1/(1:k + beta)
         p[2,] <- p[2,]/sum(p[2,])
+
+      }else if(expID==3){ #uniform-spike
+        #Zero some out and add to a single probability (exp 3):
+        p[2,] <- p[1,]
+        p[2,numzero+1] <- sum(p[2,1:(numzero+1)])
+        p[2,1:numzero] <- 0
+
+
+      }else if(expID==4){ #uniform
+        #Zero some out and make the rest uniform (Exp 4):
+        num_nonzero = k-numzero
+        p[2,1:num_nonzero] <- rep(1/num_nonzero,times=num_nonzero)
+        p[2,(num_nonzero+1):k] <- 0
+
       }
 
     }

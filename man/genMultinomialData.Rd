@@ -31,17 +31,17 @@ total number of objects that are put into k bins in the typical multinomial expe
 \item{beta}{Default is 0.25. TODO}
 }
 \value{
-A list containing two dataframes each having dimension sample_size by k.
+A list containing two matrices each having dimension sample_size by k.
 }
 \description{
 Generate two sets of multinomially distributed vectors using rmultinom. Useful for hypothesis testing simulations.
 Six different experiments with different probability vectors are available in addition to user-specified probability vector \code{p}:
 \itemize{
-\item Experiment1: TODO
-\item Experiment2: TODO
+\item Experiment1: \eqn{p_{1i} = 1/k, p_{2i} = 0} for \eqn{i \in [1,b]} and \eqn{p_{2i} = 1/(k − b)}  for \eqn{i > b}
+\item Experiment2: \eqn{p_{1i} = 1/k, p_{2i} = 0} for \eqn{i \in [1,b]} and \eqn{p_{2,b+1}= \sum_{1}^{b+1} p_{2i} }
 \item Experiment3: TODO
 \item Experiment4: TODO
-\item Experiment5: TODO
+\item Experiment5: \eqn{p_{1i} = \frac{1/i^\alpha}{\sum_1^k 1/i^\alpha}}
 \item Experiment6: TODO
 }
 }
