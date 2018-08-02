@@ -33,8 +33,9 @@ data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
 
 #Perform test (compare the ith row of x to the ith row of y for all rows):
 result <- multinom.test(x=data[[1]],y=data[[2]])
-#Return power of test:
-mean(result$pvalue)
+#Return power of test at the alpha=0.05 level:
+alpha <- 0.05
+mean(result$pvalue<alpha)
 }
 \seealso{
 Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, TEST, \url{https://doi.org/10.1007/s11749-018-0600-8}

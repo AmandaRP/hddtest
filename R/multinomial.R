@@ -25,8 +25,9 @@
 #'
 #' #Perform test (compare the ith row of x to the ith row of y for all rows):
 #' result <- multinom.test(x=data[[1]],y=data[[2]])
-#' #Return power of test:
-#' mean(result$pvalue)
+#' #Return power of test at the alpha=0.05 level:
+#' alpha <- 0.05
+#' mean(result$pvalue<alpha)
 
 multinom.test <- function(x,y){
 
