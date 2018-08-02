@@ -164,7 +164,7 @@ genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),sample
       if(expID==1){ #inverse
         #Flip order two entries:
         p[2,] <- p[1,]
-        if(is.null(w)){
+        if(!exists("w")){
           w <- 1
         }
         p[2,w] <- p[1,m]
