@@ -15,6 +15,7 @@ You can install hddtest from github with:
 ``` r
 install.packages("devtools")
 devtools::install_github("AmandaRP/hddtest")
+library("hddtest")
 ```
 
 Example
@@ -26,10 +27,10 @@ Generate two multinomial count vectors and test whether they come from the same 
 data <- genMultinomialData(null_hyp=FALSE,sample_size = 1)
 multinom.test(x=data[[1]],y=data[[2]])
 #> $statistic
-#> [1] 1.897529
+#> [1] 11.46022
 #> 
 #> $pvalue
-#> [1] 0.02887905
+#> [1] 0
 ```
 
 References

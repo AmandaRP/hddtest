@@ -24,6 +24,7 @@ You can install hddtest from github with:
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("AmandaRP/hddtest")
+library("hddtest")
 ```
 
 ## Example
