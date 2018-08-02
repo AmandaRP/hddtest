@@ -8,8 +8,8 @@ multinom.test(x, y)
 }
 \arguments{
 \item{x, y}{Integer vectors (or matrices/dataframes containing multiple integer vector observations as rows).
-\code{x} and \code{y} must be the same type and dimension. If \code{x} and \code{y} are matrices (or dataframes), the ith row
-of \code{x} will be tested against the \eqn{i^th} row of \code{y} for all \eqn{i} in 1..nrow(x).}
+\code{x} and \code{y} must be the same type and dimension. If \code{x} and \code{y} are matrices (or dataframes), the \eqn{i^{\text{th}}} row
+of \code{x} will be tested against the \eqn{i^{\text{th}}} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.}
 }
 \value{
 The \code{statistic} and its associated \code{p-value}.
