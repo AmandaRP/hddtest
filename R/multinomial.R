@@ -82,15 +82,12 @@ multinom.test <- function(x,y){
     for(g in 1:2){
       D_var <- D_var + (2/n[[g]]^2)* rowSums(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
     }
-    #integer overflow:
     stat_var <- D_var + ( 4 * rowSums(p_hat[[1]] * p_hat[[2]]) /n[[1]] ) /n[[2]]
-    #  }
   }else{
     D_var <- 0
     for(g in 1:2){
       D_var <- D_var + (2/n[[g]]^2)* sum(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
     }
-    #integer overflow:
     stat_var <- D_var + ( 4 * sum(p_hat[[1]] * p_hat[[2]]) /n[[1]] ) /n[[2]]
   }
 
@@ -152,16 +149,32 @@ genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),sample
 
     #First group:
     if(expID==1){  #inverse or shift
+
+      if(alpha<0 || alpha>1){
+        stop("Error: alpha must be between zero and one.")
+      }else if(!(m %in% 1:k)){
+        stop("Error: m must be an integer between 1 and k")
+      }
+
       p[1,] <- (1/(1:k)^alpha)
       p[1,] <- p[1,]/sum(p[1,])
     }else if(expID==2 | expID==3){  #uniform
+
+      if(!(numzero %in% 1:(k-1))){
+        stop("Error: numzero must be an integer in the range 1 to k-1.")
+      }
+
       p[1,] <- rep(1/k,times=k)
+    }else{
+      stop("Error: expID must be 1, 2, or 3")
     }
 
     if(null_hyp){ #null hypothesis is TRUE
       p[2,] <- p[1,]
+
     }else{ #null hypothesis is FALSE
-      if(expID==1){ #inverse
+      if(expID==1){
+
         #Flip order two entries:
         p[2,] <- p[1,]
         if(!exists("w")){
@@ -170,14 +183,15 @@ genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),sample
         p[2,w] <- p[1,m]
         p[2,m] <- p[1,w]
 
-      }else if(expID==2){ #uniform-spike
+      }else if(expID==2){
 
-        #Zero some out and add to a single probability (exp 3):
+        #Zero some out and add to a single probability:
         p[2,] <- p[1,]
         p[2,numzero+1] <- sum(p[2,1:(numzero+1)])
         p[2,1:numzero] <- 0
 
-      }else if(expID==3){ #uniform
+      }else if(expID==3){
+
         #Zero some out and make the rest uniform:
         num_nonzero = k-numzero
         p[2,1:num_nonzero] <- rep(1/num_nonzero,times=num_nonzero)
