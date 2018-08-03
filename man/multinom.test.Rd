@@ -8,8 +8,8 @@ multinom.test(x, y)
 }
 \arguments{
 \item{x, y}{Integer vectors (or matrices/dataframes containing multiple integer vector observations as rows).
-\code{x} and \code{y} must be the same type and dimension. If \code{x} and \code{y} are matrices (or dataframes), the \eqn{i^{\text{th}}} row
-of \code{x} will be tested against the \eqn{i^{\text{th}}} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.}
+\code{x} and \code{y} must be the same type and dimension. If \code{x} and \code{y} are matrices (or dataframes), the \eqn{i^th} row
+of \code{x} will be tested against the \eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.}
 }
 \value{
 The \code{statistic} and its associated \code{p-value}.
@@ -18,11 +18,11 @@ for each row.
 }
 \description{
 Peforms the test for two multinomial vectors
-testing \eqn{H_o:} the underlying multinomial probability vectors are the same
+testing \eqn{H_0:} the underlying multinomial probability vectors are the same
 vs. \eqn{H_1:} they are different.
 }
 \examples{
-#Generate two vectors from the same distributions:
+#Generate two vectors from the same distribution:
 data <- genMultinomialData(sample_size=1)
 
 #Perform test:
@@ -33,6 +33,7 @@ data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
 
 #Perform test (compare the ith row of x to the ith row of y for all rows):
 result <- multinom.test(x=data[[1]],y=data[[2]])
+
 #Return power of test at the alpha=0.05 level:
 alpha <- 0.05
 mean(result$pvalue<alpha)
