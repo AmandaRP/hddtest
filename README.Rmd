@@ -15,7 +15,7 @@ devtools::load_all()
 
 # hddtest
 
-Functions for hypothesis testing of high dimensional discrete data. Currently functions for multinomially distributed data, as described in [1], are available. Functions for multivariate binary data will be added in the future.  
+Functions for hypothesis testing of high dimensional discrete data. Currently functions for multinomial data, as described in [1], are available. Functions for multivariate binary data will be added in the future.  
 
 ## Installation
 
