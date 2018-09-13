@@ -7,7 +7,8 @@
 #'
 #' @param x,y Integer vectors (or matrices/dataframes containing multiple integer vector observations as rows).
 #' \code{x} and \code{y} must be the same type and dimension. If \code{x} and \code{y} are matrices (or dataframes), the \eqn{i^th} row
-#' of \code{x} will be tested against the \eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
+#' of \code{x} will be tested against the \eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}. Alternatively, \code{x}
+#' can be a list of two vectors, matrices, or dataframes to be compared. In this case, \code{y} is NULL by default.
 #' @return The \code{statistic} and its associated \code{p-value}.
 #' If \code{x} and \code{y} are either matrices or dataframes, a \code{statistic} and \code{p-value} will be returned
 #' for each row.
@@ -30,29 +31,36 @@
 #' alpha <- 0.05
 #' mean(result$pvalue<alpha)
 
-multinom.test <- function(x,y){
+multinom.test <- function(x,y=NULL){
+
+  if(!is.null(y) ){
+    data <- list(x,y)
+  }else if(class(x)=="list"){
+    data <- x
+  }else{
+    stop("If \code{y} is \code{NULL}, \code{x} must be a list of two vectors, matrices, or dataframes.")
+  }
 
   #check that x and y are the same structures:
-  if(class(x) != class(y)){
-    stop("x and y must be the same class")
+  if(class( data[[1]] ) != class( data[[2]] )){
+    stop("The structures being compared must be the same class")
   }
 
   #Check that the same number of categories are defined for x and y:
-  if( ((is.data.frame(x) || is.matrix(x)) && any(dim(x) != dim(y))  ) ||
-      ((is.vector(x)     || is.array(x))  && length(x) != length(y)) ){
+  if( ((is.data.frame( data[[1]] ) || is.matrix( data[[1]] )) && any(dim( data[[1]] ) != dim( data[[2]] ))  ) ||
+      ((is.vector( data[[1]] )     || is.array( data[[1]] ))  && length( data[[1]] ) != length( data[[2]] )) ){
     stop("x and y should have the same number of categories
      (i.e. same length if x and y are vectors or same number of columns if
          x and y are matrices or dataframes)")
   }
 
 
-  if((is.data.frame(x) || is.matrix(x)) && nrow(x)>1  ){
+  if((is.data.frame( data[[1]] ) || is.matrix( data[[1]] )) && nrow( data[[1]] )>1  ){
     multipleSamples <- TRUE
   }else{
     multipleSamples <- FALSE
   }
 
-  data <- list(x,y)
 
   p_hat <- list() #p_hat is each element divided by the row sum.
   sum <- 0
