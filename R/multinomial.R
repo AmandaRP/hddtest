@@ -139,7 +139,7 @@ multinom.test <- function(x,y=NULL){
 #' @param sample_size integer specifying the number of random vectors to generate for each of the two groups.
 #' @param expID Experiment number 1-3. Default is 1.
 #' @param alpha Number between 0 and 1. Used for experiment 1. Default is 0.45.
-#' @param m integer between 2 and \eqn{k}. Used in experiment 1 for the alternative hypothesis. Default is 50.
+#' @param m integer between 2 and \eqn{k}. Used in experiment 1 for the alternative hypothesis. Default is 1000.
 #' @param numzero integer between 1 and \eqn{k}-1. Used in experiments 2 and 3 for the alternative hypothesis. Default is 50.
 #' @param ... Additional parameters.
 #' @return A list containing two matrices each having dimension \code{sample_size} by \eqn{k}.
@@ -152,7 +152,7 @@ multinom.test <- function(x,y=NULL){
 #'
 #' #Proportion of entries less than 5 in the first dataset:
 #' sum(X[[1]]<5)/(nrow(X[[1]])*ncol(X[[1]]))
-genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),sample_size=30,expID=1,alpha=0.45,m=50,numzero=50,...){
+genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),sample_size=30,expID=1,alpha=0.45,m=1000,numzero=50,...){
 
   #Generate p if it is not given
   if(is.null(p)){

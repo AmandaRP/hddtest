@@ -5,7 +5,7 @@
 \title{Generate multinomial data}
 \usage{
 genMultinomialData(null_hyp = TRUE, p = NULL, k = 2000, n = c(8000,
-  8000), sample_size = 30, expID = 1, alpha = 0.45, m = 50,
+  8000), sample_size = 30, expID = 1, alpha = 0.45, m = 1000,
   numzero = 50, ...)
 }
 \arguments{
@@ -26,7 +26,7 @@ total number of objects that are put into \eqn{k} bins in the typical multinomia
 
 \item{alpha}{Number between 0 and 1. Used for experiment 1. Default is 0.45.}
 
-\item{m}{integer between 2 and \eqn{k}. Used in experiment 1 for the alternative hypothesis. Default is 50.}
+\item{m}{integer between 2 and \eqn{k}. Used in experiment 1 for the alternative hypothesis. Default is 1000.}
 
 \item{numzero}{integer between 1 and \eqn{k}-1. Used in experiments 2 and 3 for the alternative hypothesis. Default is 50.}
 
