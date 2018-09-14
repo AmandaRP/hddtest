@@ -4,12 +4,13 @@
 \alias{multinom.test}
 \title{Test two multinomial datasets}
 \usage{
-multinom.test(x, y)
+multinom.test(x, y = NULL)
 }
 \arguments{
 \item{x, y}{Integer vectors (or matrices/dataframes containing multiple integer vector observations as rows).
 \code{x} and \code{y} must be the same type and dimension. If \code{x} and \code{y} are matrices (or dataframes), the \eqn{i^th} row
-of \code{x} will be tested against the \eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.}
+of \code{x} will be tested against the \eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}. Alternatively, \code{x}
+can be a list of two vectors, matrices, or dataframes to be compared. In this case, \code{y} is NULL by default.}
 }
 \value{
 The \code{statistic} and its associated \code{p-value}.
@@ -25,8 +26,11 @@ vs. \eqn{H_1:} they are different.
 #Generate two vectors from the same distribution:
 data <- genMultinomialData(sample_size=1)
 
-#Perform test:
+#Perform test (the following calls are equivalent):
 multinom.test(x=data[[1]],y=data[[2]])
+multinom.test(data)
+library(magrittr)
+data \%>\% multinom.test()
 
 #Generate 1000 vectors from each of two different distributions:
 data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)

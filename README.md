@@ -27,10 +27,21 @@ Generate two multinomial count vectors and test whether they come from the same 
 data <- genMultinomialData(null_hyp=FALSE,sample_size = 1)
 multinom.test(x=data[[1]],y=data[[2]])
 #> $statistic
-#> [1] 6.827947
+#> [1] 6.422941
 #> 
 #> $pvalue
-#> [1] 4.306888e-12
+#> [1] 6.683298e-11
+```
+
+The last call can also be done in a "tidy" fashion using the forward pipe from the `magrittr` package:
+
+``` r
+data %>% multinom.test
+#> $statistic
+#> [1] 6.422941
+#> 
+#> $pvalue
+#> [1] 6.683298e-11
 ```
 
 References

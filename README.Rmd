@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+library(magrittr)
 devtools::load_all()
 ```
 
@@ -34,6 +35,12 @@ Generate two multinomial count vectors and test whether they come from the same 
 ```{r example}
 data <- genMultinomialData(null_hyp=FALSE,sample_size = 1)
 multinom.test(x=data[[1]],y=data[[2]])
+```
+
+The last call can also be done in a "tidy" fashion using the forward pipe from the `magrittr` package:
+
+```{r}
+data %>% multinom.test
 ```
 
 

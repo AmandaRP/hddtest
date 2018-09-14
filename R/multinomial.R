@@ -18,8 +18,11 @@
 #' #Generate two vectors from the same distribution:
 #' data <- genMultinomialData(sample_size=1)
 #'
-#' #Perform test:
+#' #Perform test (the following calls are equivalent):
 #' multinom.test(x=data[[1]],y=data[[2]])
+#' multinom.test(data)
+#' library(magrittr)
+#' data %>% multinom.test()
 #'
 #' #Generate 1000 vectors from each of two different distributions:
 #' data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
@@ -38,7 +41,7 @@ multinom.test <- function(x,y=NULL){
   }else if(class(x)=="list"){
     data <- x
   }else{
-    stop("If \code{y} is \code{NULL}, \code{x} must be a list of two vectors, matrices, or dataframes.")
+    stop("If y is NULL, x must be a list of two vectors, matrices, or dataframes.")
   }
 
   #check that x and y are the same structures:
