@@ -7,20 +7,23 @@
 multinom.test(x, y = NULL)
 }
 \arguments{
-\item{x, y}{Integer vectors (or matrices/dataframes containing multiple integer vector observations as rows).
-\code{x} and \code{y} must be the same type and dimension. If \code{x} and \code{y} are matrices (or dataframes), the \eqn{i^th} row
-of \code{x} will be tested against the \eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}. Alternatively, \code{x}
-can be a list of two vectors, matrices, or dataframes to be compared. In this case, \code{y} is NULL by default.}
+\item{x, y}{Integer vectors (or matrices/dataframes containing multiple
+integer vector observations as rows). \code{x} and \code{y} must be the
+same type and dimension. If \code{x} and \code{y} are matrices (or
+dataframes), the \eqn{i^th} row of \code{x} will be tested against the
+\eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
+Alternatively, \code{x} can be a list of two vectors, matrices, or
+dataframes to be compared. In this case, \code{y} is NULL by default.}
 }
 \value{
 The \code{statistic} and its associated \code{p-value}.
-If \code{x} and \code{y} are either matrices or dataframes, a \code{statistic} and \code{p-value} will be returned
-for each row.
+If \code{x} and \code{y} are either matrices or dataframes, a
+\code{statistic} and \code{p-value} will be returned for each row.
 }
 \description{
 Peforms the test for two multinomial vectors
-testing \eqn{H_0:} the underlying multinomial probability vectors are the same
-vs. \eqn{H_1:} they are different.
+testing \eqn{H_0:} the underlying multinomial probability vectors are the
+same vs. \eqn{H_1:} they are different.
 }
 \examples{
 #Generate two vectors from the same distribution:
@@ -43,5 +46,7 @@ alpha <- 0.05
 mean(result$pvalue<alpha)
 }
 \seealso{
-Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High Dimensional Multinomial Distributions}, TEST, \url{https://doi.org/10.1007/s11749-018-0600-8}
+Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High
+Dimensional Multinomial Distributions}, TEST,
+\url{https://doi.org/10.1007/s11749-018-0600-8}
 }
