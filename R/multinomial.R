@@ -321,3 +321,19 @@ genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),
 
   return(X)
 }
+
+
+#' Document term matrix for documents sampled from two newsgroups
+#'
+#' A dataset containing two document term matrices for subsets
+#' of two newsgroups (rec.sport.baseball and sci.med)
+#' from the 20 newsgroups dataset.
+#'
+#' @format A list of two matrices, each having dimension 594 by 16214.
+#' The (i,j) entry of each matrix is the count (term frequency) of
+#' the jth word in the ith document. The first matrix in the list
+#' contains 594 sampled documents from the rec.sport.baseball
+#' newsgroup. The second contains 594 sampled documents from the
+#' sci.med newsgroup.
+#' @source \url{http://qwone.com/~jason/20Newsgroups/}
+"twoNewsGroups"
