@@ -11,12 +11,18 @@ The hdd test package provides functionality for two-sample hypothesis testing of
 \section{hddtest functions}{
 
 multinom.test,
-genMultinomialData,
+multinom.neighborhood.test,
+genMultinomialData
+}
+
+\section{Data}{
+
+twoNewsGroups
 }
 
 \section{Authors}{
 
-Amanda Plunkett, Junyong Park
+Amanda Peterson-Plunkett, Junyong Park
 }
 
 \section{References}{
