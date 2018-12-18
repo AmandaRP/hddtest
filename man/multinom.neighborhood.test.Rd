@@ -17,12 +17,19 @@ dataframes to be compared. In this case, \code{y} is NULL by default.}
 
 \item{delta}{A number (or vector) greater than 0.}
 }
+\value{
+The \code{statistic} from \code{multinom.test}, T, and its
+associated \code{p_delta}, where \eqn{p_delta=pnorm(T - delta)}. TODO: Why subtract from 1 in code?
+If \code{x} and \code{y} are either matrices or dataframes, a
+\code{statistic} and \code{p-value} will be returned for each row.
+}
 \description{
-Motivation: In testing the equality of parameters from two populations
+In testing the equality of parameters from two populations
 (as in \code{multinom.test}),
 it frequenly happens that the null hypothesis is rejected even though the estimates
 of effect sizes are close to each other. However, these differences are so small
-that the parameters may not be considered different in practice.
+that the parameters may not be considered different in practice. A neighborhood test
+is useful in this situation.
 }
 \details{
 Peforms the test for two multinomial vectors
@@ -34,16 +41,17 @@ same vs. \eqn{H_1:} they are different.
 data <- genMultinomialData(sample_size=1)
 
 #Perform test (the following calls are equivalent):
-multinom.test(x=data[[1]],y=data[[2]])
-multinom.test(data)
+delta=60
+multinom.neighborhood.test(x=data[[1]],y=data[[2]],delta=delta)
+multinom.neighborhood.test(data,delta=delta)
 library(magrittr)
-data \%>\% multinom.test()
+data \%>\% multinom.neighborhood.test(delta=delta)
 
 #Generate 1000 vectors from each of two different distributions:
 data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
 
 #Perform test (compare the ith row of x to the ith row of y for all rows):
-result <- multinom.test(x=data[[1]],y=data[[2]])
+result <- multinom.neighborhood.test(x=data[[1]],y=data[[2]],delta=delta)
 
 #Return power of test at the alpha=0.05 level:
 alpha <- 0.05

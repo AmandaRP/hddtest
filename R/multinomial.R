@@ -125,11 +125,12 @@ multinom.test <- function(x,y=NULL){
 
 #' Perform the neighborhood test for multinom.test
 #'
-#' Motivation: In testing the equality of parameters from two populations
+#' In testing the equality of parameters from two populations
 #' (as in \code{multinom.test}),
 #' it frequenly happens that the null hypothesis is rejected even though the estimates
 #' of effect sizes are close to each other. However, these differences are so small
-#' that the parameters may not be considered different in practice.
+#' that the parameters may not be considered different in practice. A neighborhood test
+#' is useful in this situation.
 #'
 #' Peforms the test for two multinomial vectors
 #' testing \eqn{H_0:} the underlying multinomial probability vectors are the
@@ -143,7 +144,7 @@ multinom.test <- function(x,y=NULL){
 #' Alternatively, \code{x} can be a list of two vectors, matrices, or
 #' dataframes to be compared. In this case, \code{y} is NULL by default.
 #' @return The \code{statistic} from \code{multinom.test}, T, and its
-#' associated \code{p_delta}, where \eqn{p_delta=pnorm(T - delta). TODO: Why subtract from 1 in code?
+#' associated \code{p_delta}, where \eqn{p_delta=pnorm(T - delta)}. TODO: Why subtract from 1 in code?
 #' If \code{x} and \code{y} are either matrices or dataframes, a
 #' \code{statistic} and \code{p-value} will be returned for each row.
 #' @param delta A number (or vector) greater than 0.
@@ -156,16 +157,17 @@ multinom.test <- function(x,y=NULL){
 #' data <- genMultinomialData(sample_size=1)
 #'
 #' #Perform test (the following calls are equivalent):
-#' multinom.test(x=data[[1]],y=data[[2]])
-#' multinom.test(data)
+#' delta=60
+#' multinom.neighborhood.test(x=data[[1]],y=data[[2]],delta=delta)
+#' multinom.neighborhood.test(data,delta=delta)
 #' library(magrittr)
-#' data %>% multinom.test()
+#' data %>% multinom.neighborhood.test(delta=delta)
 #'
 #' #Generate 1000 vectors from each of two different distributions:
 #' data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
 #'
 #' #Perform test (compare the ith row of x to the ith row of y for all rows):
-#' result <- multinom.test(x=data[[1]],y=data[[2]])
+#' result <- multinom.neighborhood.test(x=data[[1]],y=data[[2]],delta=delta)
 #'
 #' #Return power of test at the alpha=0.05 level:
 #' alpha <- 0.05
@@ -179,7 +181,7 @@ multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
   result <- multinom.test(x,y)
 
   #subtract every value of delta from every value of the statistic:
-  diff <- lappy(z=result$statistic,function(z,delta){z-delta},delta=delta)
+  diff <- lapply(X=result$statistic,FUN=function(X,delta){X-delta},delta=delta)
 
   mat <- matrix(unlist(diff),length(diff),length(delta),byrow=TRUE)
   p_delta <- 1 - pnorm(q=mat)
