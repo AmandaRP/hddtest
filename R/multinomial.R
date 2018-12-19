@@ -175,7 +175,7 @@ multinom.test <- function(x,y=NULL){
 
 multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
 
-  if(is.null(delta) | delta <=0){
+  if(is.null(delta) | any(delta <=0)){
     stop("Please specify delta>0")
   }
   result <- multinom.test(x,y)
