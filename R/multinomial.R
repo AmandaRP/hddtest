@@ -96,7 +96,7 @@ multinom.test <- function(x,y=NULL){
 
 
   if(multipleSamples){
-    D_var <- rep(0,nrow(x))
+    D_var <- rep(0,nrow(data[[1]]))
     for(g in 1:2){
       D_var <- D_var + (2/n[[g]]^2)* rowSums(p_hat[[g]]^2 + p_hat[[g]]/n[[g]])
     }
