@@ -153,26 +153,53 @@ multinom.test <- function(x,y=NULL){
 #' Dimensional Multinomial Distributions}, TEST,
 #' \url{https://doi.org/10.1007/s11749-018-0600-8}
 #' @examples
-#' #Generate two vectors from the same distribution:
-#' data <- genMultinomialData(sample_size=1)
 #'
-#' #Perform test (the following calls are equivalent):
-#' delta=60
-#' multinom.neighborhood.test(x=data[[1]],y=data[[2]],delta=delta)
-#' multinom.neighborhood.test(data,delta=delta)
-#' library(magrittr)
-#' data %>% multinom.neighborhood.test(delta=delta)
+#' require(magrittr)
 #'
-#' #Generate 1000 vectors from each of two different distributions:
-#' data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
+#' #Sample two sets of 200 documents from the sci.med newsGroup (to simulate the null hypothesis being TRUE)
+#' #For each of the two groups, sum the 200 TF vectors together. They will be the two vectors that we test.
+#' data(twoNewsGroups)
+#' num_docs <- 200
+#' vecs2Test <- list(NA,2)
+#' samples <- sample(1:nrow(data[[2]]),2*num_docs)
+#' group1 <- sample(1:length(samples),num_docs)
+#' vecs2Test[[1]] <- twoNewsGroups$sci.med[samples[group1],] %>% colSums() %>% matrix(nrow=1)
+#' vecs2Test[[2]] <- twoNewsGroups$sci.med[samples[-group1],] %>% colSums() %>% matrix(nrow=1)
 #'
-#' #Perform test (compare the ith row of x to the ith row of y for all rows):
-#' result <- multinom.neighborhood.test(x=data[[1]],y=data[[2]],delta=delta)
+#' #Test the null that the two vectors come from the same distribution (i.e. same news group)
+#' vecs2Test %>% multinom.test()
 #'
-#' #Return power of test at the alpha=0.05 level:
-#' alpha <- 0.05
-#' mean(result$pvalue<alpha)
-
+#' The above test likely produced a significant p-value meaning that we would reject the null. However, the difference isn't very interesting. Instead, test that the differences are within some neighborhood:
+#' vecs2Test %>% multinom.neighborhood.test(delta=50)
+#'
+#' #How to choose the appropriate delta? The answer come from subject matter expertise about the problem domain. Or, run a simulation to gain insight:
+#'
+#' simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
+#'
+#'   vecs2Test <- list( matrix(NA,reps,ncol(data[[1]])), matrix(NA,reps,ncol(data[[1]])) )
+#'   for(i in 1:reps){
+#'     if(null_hyp){
+#'       samples <- sample(1:nrow(data[[2]]),num_docs[1]+num_docs[2])
+#'       group1 <- sample(1:length(samples),num_docs[1])
+#'       vecs2Test[[1]][i,] <- data[[2]][samples[group1],] %>% colSums()
+#'       vecs2Test[[2]][i,] <- data[[2]][samples[-group1],] %>% colSums()
+#'     }else{
+#'       vecs2Test[[1]][i,] <- data[[1]][sample(1:nrow(data[[1]]),num_docs[1]),] %>% colSums()
+#'       vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]),num_docs[2]),] %>% colSums()
+#'     }
+#'   }
+#'
+#'   result <- vecs2Test %>% multinom.neighborhood.test(delta=delta)
+#' } #end simulation function
+#'
+#' delta <- 1:160
+#' p.delta.null <- simulation(data=twoNewsGroups,null_hyp=TRUE,delta=delta)$pvalue_delta
+#' p.delta.alt  <- simulation(data=twoNewsGroups,null_hyp=FALSE,delta=delta)$pvalue_delta
+#'
+#' #Plot:
+#' par(xpd=TRUE, mar=par()$mar+c(0,0,0,5))
+#' matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)), type="l",ylab="p.delta",main="P-Value Curves for Simulation",col=c( rep("red",nrow(p.delta.null)),  rep("blue",nrow(p.delta.alt)) ) )
+#'
 multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
 
   if(is.null(delta) | any(delta <=0)){
