@@ -33,5 +33,5 @@ p.delta.null <- myfunction(data=twoNewsGroups,null_hyp=TRUE,delta=delta)$pvalue_
 p.delta.alt  <- myfunction(data=twoNewsGroups,null_hyp=FALSE,delta=delta)$pvalue_delta
 
 par(xpd=TRUE, mar=par()$mar+c(0,0,0,5))
-matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)), type="l" )
+matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)), type="l",ylab="p.delta",main="Title",col=c( rep("red",nrow(p.delta.null)),  rep("blue",nrow(p.delta.alt)) ) )
 
