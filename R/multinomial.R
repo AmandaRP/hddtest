@@ -144,35 +144,47 @@ multinom.test <- function(x,y=NULL){
 #' Alternatively, \code{x} can be a list of two vectors, matrices, or
 #' dataframes to be compared. In this case, \code{y} is NULL by default.
 #' @return The \code{statistic} from \code{multinom.test}, T, and its
-#' associated \code{p_delta}, where \eqn{p_delta=pnorm(T - delta)}. TODO: Why subtract from 1 in code?
+#' associated \code{p_delta}, where \eqn{p_delta=pnorm(T - delta)}.
+#' TODO: Why subtract from 1 in code?
 #' If \code{x} and \code{y} are either matrices or dataframes, a
 #' \code{statistic} and \code{p-value} will be returned for each row.
 #' @param delta A number (or vector) greater than 0.
-#' @seealso
+#'#' @seealso
 #' Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High
 #' Dimensional Multinomial Distributions}, TEST,
 #' \url{https://doi.org/10.1007/s11749-018-0600-8}
-#' @examples
 #'
+#' @examples
 #' require(magrittr)
 #'
-#' #Sample two sets of 200 documents from the sci.med newsGroup (to simulate the null hypothesis being TRUE)
-#' #For each of the two groups, sum the 200 TF vectors together. They will be the two vectors that we test.
+#' #Sample two sets of 200 documents from the sci.med newsGroup (to simulate
+#' #    the null hypothesis being TRUE). For each of the two groups, sum the
+#' #    200 TF vectors together. They will be the two vectors that we test.
+#'
 #' data(twoNewsGroups)
 #' num_docs <- 200
 #' vecs2Test <- list(NA,2)
 #' samples <- sample(1:nrow(data[[2]]),2*num_docs)
 #' group1 <- sample(1:length(samples),num_docs)
-#' vecs2Test[[1]] <- twoNewsGroups$sci.med[samples[group1],] %>% colSums() %>% matrix(nrow=1)
-#' vecs2Test[[2]] <- twoNewsGroups$sci.med[samples[-group1],] %>% colSums() %>% matrix(nrow=1)
+#' vecs2Test[[1]] <- twoNewsGroups$sci.med[samples[group1],] %>%
+#'                                     colSums() %>% matrix(nrow=1)
+#' vecs2Test[[2]] <- twoNewsGroups$sci.med[samples[-group1],] %>%
+#'                                     colSums() %>% matrix(nrow=1)
 #'
-#' #Test the null that the two vectors come from the same distribution (i.e. same news group)
+#' #Test the null that the two vectors come from the same distribution
+#' #    (i.e. same news group)
+#'
 #' vecs2Test %>% multinom.test()
 #'
-#' The above test likely produced a significant p-value meaning that we would reject the null. However, the difference isn't very interesting. Instead, test that the differences are within some neighborhood:
-#' vecs2Test %>% multinom.neighborhood.test(delta=50)
+#' #The above test likely produced a significant p-value meaning that we would
+#' #    reject the null. However, the difference isn't very interesting. Instead,
+#' #    test that the differences are within some neighborhood:
 #'
-#' #How to choose the appropriate delta? The answer come from subject matter expertise about the problem domain. Or, run a simulation to gain insight:
+#' vecs2Test %>% multinom.neighborhood.test(delta=60)
+#'
+#' #How to choose the appropriate delta? The answer may come from subject
+#' #    matter expertise about the problem domain. Or, run a simulation to
+#' #    gain insight:
 #'
 #' simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
 #'
@@ -184,8 +196,10 @@ multinom.test <- function(x,y=NULL){
 #'       vecs2Test[[1]][i,] <- data[[2]][samples[group1],] %>% colSums()
 #'       vecs2Test[[2]][i,] <- data[[2]][samples[-group1],] %>% colSums()
 #'     }else{
-#'       vecs2Test[[1]][i,] <- data[[1]][sample(1:nrow(data[[1]]),num_docs[1]),] %>% colSums()
-#'       vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]),num_docs[2]),] %>% colSums()
+#'       vecs2Test[[1]][i,] <- data[[1]][sample(1:nrow(data[[1]]),num_docs[1]),] %>%
+#'                                      colSums()
+#'       vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]),num_docs[2]),] %>%
+#'                                      colSums()
 #'     }
 #'   }
 #'
@@ -199,7 +213,7 @@ multinom.test <- function(x,y=NULL){
 #' #Plot:
 #' par(xpd=TRUE, mar=par()$mar+c(0,0,0,5))
 #' matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)), type="l",ylab="p.delta",main="P-Value Curves for Simulation",col=c( rep("red",nrow(p.delta.null)),  rep("blue",nrow(p.delta.alt)) ) )
-#'
+
 multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
 
   if(is.null(delta) | any(delta <=0)){

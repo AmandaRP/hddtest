@@ -1,4 +1,4 @@
-
+library(magrittr)
 
 simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
 
