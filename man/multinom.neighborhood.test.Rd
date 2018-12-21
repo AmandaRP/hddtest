@@ -15,25 +15,22 @@ dataframes), the \eqn{i^th} row of \code{x} will be tested against the
 Alternatively, \code{x} can be a list of two vectors, matrices, or
 dataframes to be compared. In this case, \code{y} is NULL by default.}
 
-\item{delta}{A number (or vector) greater than 0. If not defined, then
-\code{multinom.test} will be performed (which is equivalent to
-the neighborhood test with \code{delta}=0).}
+\item{delta}{A number (or vector) greater than 0.}
 }
 \value{
 The \code{statistic} from \code{multinom.test} and its
-associated \code{p_delta}, where \eqn{p_delta=pnorm(T - delta)}.
-TODO: Why subtract from 1 in code?
+associated \code{p_delta}, where \eqn{p_delta = 1 - pnorm(T - delta)}.
 If \code{x} and \code{y} are two dimensional (that is, they are matrices
-or dataframes with more than one row) and/or
-\code{delta} is a vector, then a matrix will be returned where the
-\eqn{i,j^{th}} entry will be the \code{p.delta} associated with the
-\eqn{i^{th}} row of \code{x} (and \code{y}) and the \eqn{j^{th}} entry of
-the \code{delta} vector.
+or dataframes with more than one row) and/or \code{delta} is a vector,
+then a matrix will be returned where the \eqn{i,j^{th}} entry will be the
+\code{p.delta} associated with the \eqn{i^{th}} row of \code{x} (and
+\code{y}) and the \eqn{j^{th}} entry of the \code{delta} vector.
 }
 \description{
 Peforms the test for two multinomial vectors
-testing \eqn{H_0:} the underlying multinomial probability vectors are the
-same vs. \eqn{H_1:} they are different.
+testing \eqn{H_0:} the underlying multinomial probability vectors
+are within some neighborhood of one another vs. \eqn{H_1:} they are
+not.
 }
 \details{
 In testing the equality of parameters from two populations
@@ -57,7 +54,6 @@ data(twoNewsGroups)
 
 num_docs <- 200
 vecs2Test <- list(NA,2)
-
 rowIDS <- 1:nrow(twoNewsGroups$sci.med)
 group_1 <- sample(rowIDS,num_docs)
 group_2 <- sample(rowIDS[-group_1],num_docs)
@@ -82,16 +78,16 @@ vecs2Test \%>\% multinom.neighborhood.test(delta=60)
 #    matter expertise about the problem domain. Or, run a simulation to
 #    gain insight:
 
+#Simulation function:
 simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
-
   vecs2Test <- list( matrix(NA,reps,ncol(data[[1]])), matrix(NA,reps,ncol(data[[1]])) )
   for(i in 1:reps){
     if(null_hyp){
       rowIDS <- 1:nrow(data[[2]])
       group_1 <- sample(rowIDS,num_docs[2])
       group_2 <- sample(rowIDS[-group_1],num_docs[2])
-      vecs2Test[[1]][i,] <- data[[2]][samples[group1],] \%>\% colSums()
-      vecs2Test[[2]][i,] <- data[[2]][samples[-group1],] \%>\% colSums()
+      vecs2Test[[1]][i,] <- data[[2]][group_1,] \%>\% colSums()
+      vecs2Test[[2]][i,] <- data[[2]][group_2,] \%>\% colSums()
     }else{
       vecs2Test[[1]][i,] <- data[[1]][sample(1:nrow(data[[1]]),num_docs[1]),] \%>\%
                                      colSums()
@@ -102,13 +98,19 @@ simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
   result <- vecs2Test \%>\% multinom.neighborhood.test(delta=delta)
 } #end simulation function
 
+#Run simulation for varying values of delta:
+
 delta <- 1:160
 p.delta.null <- simulation(data=twoNewsGroups,null_hyp=TRUE,delta=delta)$pvalue_delta
 p.delta.alt  <- simulation(data=twoNewsGroups,null_hyp=FALSE,delta=delta)$pvalue_delta
 
 #Plot:
-par(xpd=TRUE, mar=par()$mar+c(0,0,0,5))
-matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)), type="l",ylab="p.delta",main="P-Value Curves for Simulation",col=c( rep("red",nrow(p.delta.null)),  rep("blue",nrow(p.delta.alt)) ) )
+par(xpd=TRUE)
+matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)),
+        type="l",lty=1,ylab="p.delta",main="P-Value Curves for Simulation",
+        col=c( rep("red",nrow(p.delta.null)), rep("blue",nrow(p.delta.alt))))
+legend(55, .9, legend=c("null hypothesis", "alternative"),
+       col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
 }
 \seealso{
 Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High
