@@ -21,7 +21,11 @@
 #'
 #' @section Warning:
 #' As described in the reference below, this method may not perform
-#' well on highly correlated variables.
+#' well (low power) on highly correlated variables.
+#'
+#' Also, note that for large values of \code{numPerms}, run time may be long.
+#' However, larger values of \code{numPerms} produce more accurate estimates
+#' of the p-value.
 #'
 #' @param x,y Matrices (or dataframes) containing multiple
 #' integer vector observations as rows. \code{x} and \code{y} must be the
@@ -87,7 +91,7 @@ mvbinary.test <- function(x,y=NULL,numPerms=5000){
   #Permutation method to compute p-value:
   data <- rbind(data[[1]],data[[2]]) #combine into one dataframe
   data.perm <- list()
-  perm.stats <- array(NA,dim=NumPerms)
+  perm.stats <- array(NA,dim=numPerms)
   for(i in 1:numPerms){
     sortOrder <- sample(1:sum(n))
     data.perm[[1]] <- data[sortOrder[1:n[1]],]
@@ -128,7 +132,7 @@ get_stat <- function(X,n=NULL,d=NULL){
   #Comput statistic:
   stat <- (D.array^2) %*% (abs(D.array)>=delta)
 
-  return(list(statistic=stat,pHatMatrix=pHatMatrix))
+  return(list(statistic=as.numeric(stat),pHatMatrix=pHatMatrix))
 }
 
 
@@ -177,29 +181,29 @@ get_stat <- function(X,n=NULL,d=NULL){
 #' @return epsilon Value of the \code{epsilon} parameter.
 #'
 #' @seealso
-#' Amanda Plunkett & Junyong Park (2017) \emph{Two-sample tests for sparse
+#' Amanda Plunkett & Junyong Park (2017), \emph{Two-sample tests for sparse
 #' high-dimensional binary data}, Communications in Statistics - Theory and
 #' Methods, 46:22, 11181-11193
 #'
-#' Junyong Park & J. Davis (2011) \emph{Estimating and testing conditional sums
+#' Junyong Park & J. Davis (2011), \emph{Estimating and testing conditional sums
 #' of means in high dimensional multivariate binary data}, Journal of Statistical
 #' Planning and Inference, 141:1021-1030
 #'
 #' @examples
-#' binData <- genMVBinaryData(n=,d=,null_hyp=FALSE,)
+#' binData <- genMVBinaryData(null_hyp=TRUE)$X
 #'
 #' #Check the dimension of each matrix:
 #' lapply(binData,dim)
 #'
 #' #Test whether the two datasets were generated using the same mean:
 #' mvbinary.test(binData)
-genMVBinaryData <- function(n=30,d=2000,null_hyp=TRUE,r=0.3,epsilon=0.2,sigma=c(0.3,0.1),gamma=0.3,p0=0.1){
+genMVBinaryData <- function(n=c(30,30),d=2000,null_hyp=TRUE,r=0.3,epsilon=0.2,sigma=c(0.3,0.1),gamma=0.3,p0=0.1){
 
   m <- length(n) #num groups
 
   #Generate probabilities that will be used to generate data. mxd matrix.
   if(null_hyp){
-    #Using mixture dist in Dr Park paper, eqn (18). note: elementwise multiplication on purpose:
+    #note: elementwise multiplication on purpose:
     b <- rbinom(d,size=1,prob=epsilon)
     probs <- matrix(  (rep(1,d) - b)*p0 + b * runif(d,min=0,max=sigma[1])  ,nrow=m,ncol=d,byrow=TRUE)
   }else{
