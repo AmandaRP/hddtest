@@ -5,19 +5,23 @@
 #' same vs. \eqn{H_1:} they are different.
 #'
 #'
-#' Statistic:
-#' \eqn{T = \sum_{j=1}^d D_j^2 I( |Dj| \ge \delta(d))}
-#' where \eqn{d} is the dimension.
-#' \eqn{Dj = (\hat{p}_{1j} − \hat{p}_{2j} )/sqrt{ \hat{p}_j (1 − \hat{p}_j )(1/n1 + 1/n2) } }
-#' where \eqn{\hat{p}_{cj}} is the estimate of \eqn{p_{cj}} for the \eqn{c^{th}}
-#' group calculated by  \eqn{x_{cj}}. Let \eqn{\hat{p}_j} be the pooled estimate
-#' for the \eqn{j^{th}} variable. Additionally,
-#' \eqn{\delta(d) = \sqrt{2 log (a_d d)}} where \eqn{a_d = (log d)^{-2}}.
+#' The statistic is \eqn{T = \sum_{j=1}^d D_j^2 I( |Dj| \ge \delta(d))}
+#' where \eqn{d} is the dimension of the data. Additionally:
+#' \itemize{
+#'   \item \eqn{Dj = (\hat{p}_{1j} − \hat{p}_{2j} )/\sqrt{ \hat{p}_j (1 − \hat{p}_j )(1/n1 + 1/n2) } }
+#'   \item \eqn{\hat{p}_{cj}} is the estimate of \eqn{p_{cj}} for the \eqn{c^{th}} group calculated by the \eqn{j^th} column mean
+#'   \item \eqn{\hat{p}_j} is the pooled estimate for the \eqn{j^{th}} variable.
+#'   \item \eqn{\delta(d) = \sqrt{2 log (a_d d)}} where \eqn{a_d = (log d)^{-2}}
+#' }
 #'
-#' P-value: Calculated using the permutation method.
+#' The p-value associated with the statistic is calculated using the
+#' permutation method. The observation vectors are repeatedly shuffled
+#' between groups, each time being used to re-calculate the statistic.
+#' A null distribution is constructed and used to calcualate the p-value.
 #'
-#' Note: As described in the reference below, this method does not perform
-#' well on highly correlated variables. See the reference for more details.
+#' @section Warning:
+#' As described in the reference below, this method may not perform
+#' well on highly correlated variables.
 #'
 #' @param x,y Matrices (or dataframes) containing multiple
 #' integer vector observations as rows. \code{x} and \code{y} must be the
@@ -26,10 +30,14 @@
 #' by default.
 #' @param numPerms Number of permutations to use to calculate the p-value.
 #' Default value is 5000.
-#' @return The \code{statistic} and its associated \code{p-value}.
+#' @return A list containing the computed \code{statistic}, a list of statistics
+#' (\code{null.statistics}) used to construct the null distritubution (from the
+#' permutation method), and the associated \code{p-value}. The \code{p-value} is
+#' the percent of \code{null.statistics} that are more extreme than the
+#' \code{statistic} computed from the original dataset.
 #'
 #' @seealso
-#' Amanda Plunkett & Junyong Park (2017) \emph{Two-sample Tests for Sparse
+#' Amanda Plunkett & Junyong Park (2017), \emph{Two-sample Tests for Sparse
 #' High-Dimensional Binary Data}, Communications in Statistics - Theory and
 #' Methods, 46:22, 11181-11193
 #'
@@ -88,7 +96,7 @@ mvbinary.test <- function(x,y=NULL,numPerms=5000){
   }
   pvalue <- mean(stat <= perm.stats) #Percentage of stats from perm method that were more extreme than observed statistic
 
-  return(list(statistic=stat, perm.stats=perm.stats, pvalue=pvalue))
+  return(list(statistic=stat, null.stats=perm.stats, pvalue=pvalue))
 
 }
 
@@ -126,20 +134,71 @@ get_stat <- function(X,n=NULL,d=NULL){
 
 ################### Generate binary data ############################
 
-#Fuction generates nxd matrix of random correlated binary data based on methed used by Dr Park.
-# n = vector containing group size for each group
-# d = num variables (dimension)
-# same: boolean T/F indicating whether group means are the same or not for each group.
-# r: mean for dist of U_{ij} ~ Ber(r)
-# gamma: mean for dist of z_i ~ Ber(gamma)
-# epsilon: Used in mixture model that generates the probabilities. Based on (18) in Dr Park paper.
-# sigma: used to define uniform distribution that generates the probabilities. Based on (18) in Dr Park paper. length=num_groups
-genMVBinaryData <- function(n,d,same=TRUE,r=0.3,gamma=0.3,epsilon=0.2,sigma=c(0.3,0.1),p0=0.1){
+#' Generate multivariate binary data
+#'
+#' Randomly generate a list of two matrices containing multivariate binary data.
+#'
+#' The \eqn{(i,j)^{th}} entry of the \eqn{c^{th}} matrix is \eqn{X_{cij} = (1 - U_{ij})Y_{icj} + U_{ij}Z_{i}} where
+#'
+#' \itemize{
+#'   \item \eqn{U_{ij} ~ Ber(r)},
+#'   \item \eqn{Z_i ~ Ber(\gamma)},
+#'   \item \eqn{Y_{icj} ~ Ber(p_{jc})} where
+#'   \itemize{
+#'     \item \eqn{p_{jc} = (1 - \beta)p_{o} + \beta h_c}
+#'     \item \eqn{\beta ~ Ber(\epsilon)}
+#'     \item \eqn{h_c ~ Uniform(0,\sigma_c)}
+#'   }
+#' }
+#'
+#'
+#' @param n Vector of length 2 containing group size (i.e. number of samples) for
+#' each group. Default value is (30,30).
+#' @param d Number of variables (dimension) of the data to be generated.
+#' Default value is 2000.
+#' @param null_hyp Boolean indicating whether group means should be the same
+#' (i.e. null hypothesis is TRUE) or different (i.e. null hypothesis is FALSE).
+#' Default value is TRUE.
+#' @param r Mean for distribution of of \eqn{U_{ij} ~ Ber(r)}. See details below.
+#' Increase \code{r} to increase the amount of correlation among the \code{d}
+#' variables. Default value is 0.3.
+#' @param epsilon Used in mixture model that generates the probability vectors.
+#' See details below. Sparsity can be increased by decreasing \code{epsilon}
+#' and vice versa. Default value is 0.2.
+#' @param sigma Used to define a uniform distribution used to generates the
+#' probability vectors. See details below. Default value is (0.3,0.1).
+#' @param gamma Mean for dist of \eqn{Z_i ~ Ber(gamma)}. See details below.
+#' Default value is 0.3.
+#' @return A list containing the following components:
+#' @return X List of two n by d matrices each containing the generated datasets.
+#' @return  p The probability vectors used to generate the two datasets.
+#' @return null_hyp Value of the \code{null_hyp} parameter.
+#' @return r Value of the \code{r} parameter.
+#' @return epsilon Value of the \code{epsilon} parameter.
+#'
+#' @seealso
+#' Amanda Plunkett & Junyong Park (2017) \emph{Two-sample tests for sparse
+#' high-dimensional binary data}, Communications in Statistics - Theory and
+#' Methods, 46:22, 11181-11193
+#'
+#' Junyong Park & J. Davis (2011) \emph{Estimating and testing conditional sums
+#' of means in high dimensional multivariate binary data}, Journal of Statistical
+#' Planning and Inference, 141:1021-1030
+#'
+#' @examples
+#' binData <- genMVBinaryData(n=,d=,null_hyp=FALSE,)
+#'
+#' #Check the dimension of each matrix:
+#' lapply(binData,dim)
+#'
+#' #Test whether the two datasets were generated using the same mean:
+#' mvbinary.test(binData)
+genMVBinaryData <- function(n=30,d=2000,null_hyp=TRUE,r=0.3,epsilon=0.2,sigma=c(0.3,0.1),gamma=0.3,p0=0.1){
 
   m <- length(n) #num groups
 
   #Generate probabilities that will be used to generate data. mxd matrix.
-  if(same){
+  if(null_hyp){
     #Using mixture dist in Dr Park paper, eqn (18). note: elementwise multiplication on purpose:
     b <- rbinom(d,size=1,prob=epsilon)
     probs <- matrix(  (rep(1,d) - b)*p0 + b * runif(d,min=0,max=sigma[1])  ,nrow=m,ncol=d,byrow=TRUE)
@@ -165,7 +224,7 @@ genMVBinaryData <- function(n,d,same=TRUE,r=0.3,gamma=0.3,epsilon=0.2,sigma=c(0.
     X[[g]] <- (matrix(1,n[g],d)-U)*Y + U*Z  #Note: Purposely meant to do element-wise multiplication.
   }
 
-  return(list(X=X,p=probs,same=same,r=r,gamma=gamma,n=n,d=d))
+  return(list(X=X,p=probs,null_hyp=null_hyp,r=r,epsilon=epsilon))
 }
 
 

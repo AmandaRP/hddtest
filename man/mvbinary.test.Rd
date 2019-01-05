@@ -17,7 +17,11 @@ by default.}
 Default value is 5000.}
 }
 \value{
-The \code{statistic} and its associated \code{p-value}.
+A list containing the computed \code{statistic}, a list of statistics
+(\code{null.statistics}) used to construct the null distritubution (from the
+permutation method), and the associated \code{p-value}. The \code{p-value} is
+the percent of \code{null.statistics} that are more extreme than the
+\code{statistic} computed from the original dataset.
 }
 \description{
 Peforms the test for two binary vectors
@@ -25,20 +29,26 @@ testing \eqn{H_0:} the underlying probability vectors are the
 same vs. \eqn{H_1:} they are different.
 }
 \details{
-Statistic:
-\eqn{T = \sum_{j=1}^d D_j^2 I( |Dj| \ge \delta(d))}
-where \eqn{d} is the dimension.
-\eqn{Dj = (\hat{p}_{1j} − \hat{p}_{2j} )/sqrt{ \hat{p}_j (1 − \hat{p}_j )(1/n1 + 1/n2) } }
-where \eqn{\hat{p}_{cj}} is the estimate of \eqn{p_{cj}} for the \eqn{c^{th}}
-group calculated by  \eqn{x_{cj}}. Let \eqn{\hat{p}_j} be the pooled estimate
-for the \eqn{j^{th}} variable. Additionally,
-\eqn{\delta(d) = \sqrt{2 log (a_d d)}} where \eqn{a_d = (log d)^{-2}}.
-
-P-value: Calculated using the permutation method.
-
-Note: As described in the reference below, this method does not perform
-well on highly correlated variables. See the reference for more details.
+The statistic is \eqn{T = \sum_{j=1}^d D_j^2 I( |Dj| \ge \delta(d))}
+where \eqn{d} is the dimension of the data. Additionally:
+\itemize{
+  \item \eqn{Dj = (\hat{p}_{1j} − \hat{p}_{2j} )/\sqrt{ \hat{p}_j (1 − \hat{p}_j )(1/n1 + 1/n2) } }
+  \item \eqn{\hat{p}_{cj}} is the estimate of \eqn{p_{cj}} for the \eqn{c^{th}} group calculated by the \eqn{j^th} column mean
+  \item \eqn{\hat{p}_j} is the pooled estimate for the \eqn{j^{th}} variable.
+  \item \eqn{\delta(d) = \sqrt{2 log (a_d d)}} where \eqn{a_d = (log d)^{-2}}
 }
+
+The p-value associated with the statistic is calculated using the
+permutation method. The observation vectors are repeatedly shuffled
+between groups, each time being used to re-calculate the statistic.
+A null distribution is constructed and used to calcualate the p-value.
+}
+\section{Warning}{
+
+As described in the reference below, this method may not perform
+well on highly correlated variables.
+}
+
 \examples{
 #Binarize the twoNewsGroups dataset:
 binData <- list(twoNewsGroups[[1]]>0,twoNewsGroups[[2]]>0)
@@ -53,7 +63,7 @@ require(magrittr)
 binData \%>\% mvbinary.test
 }
 \seealso{
-Amanda Plunkett & Junyong Park (2017) \emph{Two-sample Tests for Sparse
+Amanda Plunkett & Junyong Park (2017), \emph{Two-sample Tests for Sparse
 High-Dimensional Binary Data}, Communications in Statistics - Theory and
 Methods, 46:22, 11181-11193
 }
