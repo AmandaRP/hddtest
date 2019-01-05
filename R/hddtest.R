@@ -1,17 +1,21 @@
 #' hddtest: Two-sample hypothesis testing for high dimensional discrete disributions
 #'
-#' The hdd test package provides functionality for two-sample hypothesis testing of high dimensional discrete data. Currently, testing of multinomial data is supported.
+#' The hdd test package provides functionality for two-sample hypothesis testing
+#' of high dimensional discrete data. Currently, testing of multinomial data
+#' is supported.
 #'
 #' @section hddtest functions:
 #' multinom.test,
 #' multinom.neighborhood.test,
-#' genMultinomialData
+#' genMultinomialData,
+#' mvbinary.test,
+#' genMVBinaryData
 #'
 #' @section Data:
 #' twoNewsGroups
 #'
 #' @section Authors:
-#' Amanda Peterson-Plunkett, Junyong Park
+#' Amanda Peterson-Plunkett
 #'
 #' @section References:
 #' \itemize{
