@@ -149,15 +149,17 @@ multinom.test <- function(x,y=NULL){
 #' @param delta A number (or vector) greater than 0.
 #'
 #' @return The \code{statistic} from \code{multinom.test} and its
-#' associated \code{p_delta}, where \eqn{p_delta = 1 - pnorm(T - delta)}.
+#' associated \code{p_delta}, where \code{p_delta} \eqn{= 1 - pnorm(T - delta)}.
 #' If \code{x} and \code{y} are two dimensional (that is, they are matrices
 #' or dataframes with more than one row) and/or \code{delta} is a vector,
-#' then a matrix will be returned where the \eqn{i,j^{th}} entry will be the
-#' \code{p.delta} associated with the \eqn{i^{th}} row of \code{x} (and
-#' \code{y}) and the \eqn{j^{th}} entry of the \code{delta} vector.
+#' then a matrix will be returned where the \eqn{(i,j)^{th}} entry will be the
+#' \code{p.delta} associated with the \eqn{i^{th}} rows of \code{x} and
+#' \code{y} and the \eqn{j^{th}} entry of the \code{delta} vector.
 #'
 #' @seealso
-#' Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High
+#' \code{\link{multinom.test}}
+#'
+#' Amanda Plunkett & Junyong Park (2018), \emph{Two-Sample Test for Sparse High
 #' Dimensional Multinomial Distributions}, TEST,
 #' \url{https://doi.org/10.1007/s11749-018-0600-8}
 #'

@@ -19,7 +19,7 @@ dataframes to be compared. In this case, \code{y} is NULL by default.}
 }
 \value{
 The \code{statistic} from \code{multinom.test} and its
-associated \code{p_delta}, where \eqn{p_delta = 1 - pnorm(T - delta)}.
+associated \code{p_delta}, where \code{p_delta} \eqn{= 1 - pnorm(T - delta)}.
 If \code{x} and \code{y} are two dimensional (that is, they are matrices
 or dataframes with more than one row) and/or \code{delta} is a vector,
 then a matrix will be returned where the \eqn{i,j^{th}} entry will be the
@@ -113,6 +113,8 @@ legend(55, .9, legend=c("null hypothesis", "alternative"),
        col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
 }
 \seealso{
+\code{\link{multinom.test}}
+
 Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High
 Dimensional Multinomial Distributions}, TEST,
 \url{https://doi.org/10.1007/s11749-018-0600-8}
