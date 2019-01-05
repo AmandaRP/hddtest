@@ -11,7 +11,7 @@ multinom.neighborhood.test(x, y = NULL, delta = NULL)
 integer vector observations as rows). \code{x} and \code{y} must be the
 same type and dimension. If \code{x} and \code{y} are matrices (or
 dataframes), the \eqn{i^th} row of \code{x} will be tested against the
-\eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
+\eqn{j^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
 Alternatively, \code{x} can be a list of two vectors, matrices, or
 dataframes to be compared. In this case, \code{y} is NULL by default.}
 
@@ -36,8 +36,8 @@ not.
 In testing the equality of parameters from two populations
 (as in \code{multinom.test}),
 it frequenly happens that the null hypothesis is rejected even though the estimates
-of effect sizes are close to each other. However, these differences are so small
-that the parameters may not be considered different in practice. A neighborhood test
+of effect sizes are close to each other. However, these differences may be so small
+that the parameters are not considered different in practice. A neighborhood test
 is useful in this situation.
 }
 \examples{
