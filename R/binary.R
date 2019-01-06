@@ -197,7 +197,7 @@ get_stat <- function(X,n=NULL,d=NULL){
 #' lapply(binData,dim)
 #'
 #' #Test whether the two datasets were generated using the same mean:
-#' result <- mvbinary.test(binData,numPerms=100)
+#' result <- mvbinary.test(binData,numPerms=1000)
 #' result$pvalue
 genMVBinaryData <- function(n=c(30,30),d=2000,null_hyp=TRUE,r=0.3,epsilon=0.2,sigma=c(0.3,0.1),gamma=0.3,p0=0.1){
 
