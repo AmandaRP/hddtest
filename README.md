@@ -5,7 +5,7 @@
 hddtest
 =======
 
-Functions for hypothesis testing of high dimensional discrete data. Currently functions for multinomial data, as described in \[1\], are available. Functions for multivariate binary data will be added in the future.
+Functions for two sample hypothesis testing of high dimensional discrete data, specifically multinomial and multivariate binary data.
 
 Installation
 ------------
@@ -27,22 +27,32 @@ Generate two multinomial count vectors and test whether they come from the same 
 data <- genMultinomialData(null_hyp=FALSE,sample_size = 1)
 multinom.test(x=data[[1]],y=data[[2]])
 #> $statistic
-#> [1] 6.422941
+#> [1] 9.620794
 #> 
 #> $pvalue
-#> [1] 6.683298e-11
+#> [1] 0
 ```
 
-The last call can also be done in a "tidy" fashion using the forward pipe from the `magrittr` package:
+The last call can also be done using the `magrittr` forward pipe:
 
 ``` r
 data %>% multinom.test
 #> $statistic
-#> [1] 6.422941
+#> [1] 9.620794
 #> 
 #> $pvalue
-#> [1] 6.683298e-11
+#> [1] 0
 ```
+
+Available functions and datasets
+--------------------------------
+
+-   multinom.test
+-   multinom.neighborhood.test
+-   genMultinomialData
+-   mvbinary.test
+-   genMVBinaryData
+-   twoNewsGroups
 
 References
 ----------
