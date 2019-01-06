@@ -14,6 +14,9 @@
 #' @section Data:
 #' twoNewsGroups
 #'
+#' @section Vignettes:
+#' Multinomial Neighborhood Test
+#'
 #' @section Authors:
 #' Amanda Peterson-Plunkett
 #'
