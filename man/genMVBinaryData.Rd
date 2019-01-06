@@ -71,6 +71,7 @@ lapply(binData,dim)
 #Test whether the two datasets were generated using the same mean:
 result <- mvbinary.test(binData,numPerms=1000)
 result$pvalue
+
 }
 \seealso{
 Amanda Plunkett & Junyong Park (2017), \emph{Two-sample tests for sparse

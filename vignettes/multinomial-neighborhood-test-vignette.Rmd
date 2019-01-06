@@ -14,24 +14,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+require(magrittr)
+load(file="~/hddtest/data/twoNewsGroups.rda")
 ```
 
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
 
 ## More Examples
 
@@ -45,3 +31,85 @@ Also a quote using `>`:
 
 > "He who gives up [code] safety for [code] speed deserves neither."
 ([via](https://twitter.com/hadleywickham/status/504368538874703872))
+
+
+
+We'll look at the twoNewsGroups dataset included in the hddtest package. It contains document term frequency matrices for two of the 20 newgroups from the 20 Newsgroups dataset. See `?twoNewsGroups` for more information.
+
+Start by sampling two sets of 200 documents from the sci.med newsGroup. We'll use this to simulate the null hypothesis being TRUE, that is the two groups come from the same distribution. 
+
+```{r}
+library(hddtest)
+data(twoNewsGroups)
+
+num_docs <- 200
+vecs2Test <- list(NA,2)
+rowIDS <- 1:nrow(twoNewsGroups$sci.med)
+group_1 <- sample(rowIDS,num_docs)
+group_2 <- sample(rowIDS[-group_1],num_docs)
+```
+
+Next for each of the two groups, sum the 200 term frequency vectors together. They will be the two multinomial vectors that we test.
+
+```{r}
+vecs2Test[[1]] <- twoNewsGroups$sci.med[group_1,] %>%
+                                     colSums() %>% matrix(nrow=1)
+vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2,] %>%
+                                     colSums() %>% matrix(nrow=1)
+
+```
+
+
+Test the null hypothesis that the two vectors come from the same distribution (i.e. the same newsgroup).
+
+```{r}
+vecs2Test %>% multinom.test()
+```
+
+The above test likely produced a significant p-value meaning that we would reject the null. However, the difference isn't very interesting. Instead, test that the differences are within some neighborhood:
+
+```{r}
+vecs2Test %>% multinom.neighborhood.test(delta=60)
+```
+
+How to choose the appropriate delta? The answer may come from subject matter expertise about the problem domain. Or you can run a simulation to gain insight. Below we define a simulation function. 
+
+```{r}
+simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
+   vecs2Test <- list( matrix(NA,reps,ncol(data[[1]])),  matrix(NA,reps,ncol(data[[1]])) )
+   for(i in 1:reps){
+     if(null_hyp){
+       rowIDS <- 1:nrow(data[[2]])
+       group_1 <- sample(rowIDS,num_docs[2])
+       group_2 <- sample(rowIDS[-group_1],num_docs[2])
+       vecs2Test[[1]][i,] <- data[[2]][group_1,] %>% colSums()
+       vecs2Test[[2]][i,] <- data[[2]][group_2,] %>% colSums()
+     }else{
+       vecs2Test[[1]][i,] <- data[[1]][sample(1:nrow(data[[1]]),num_docs[1]),] %>%
+                                      colSums()
+       vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]),num_docs[2]),] %>%
+                                      colSums()
+     }
+   }
+   result <- vecs2Test %>% multinom.neighborhood.test(delta=delta)
+} #end simulation function
+```
+
+Now run simulation for varying values of delta and plot the results:
+
+```{r}
+delta <- 1:160
+p.delta.null <- simulation(data=twoNewsGroups,null_hyp=TRUE,delta=delta)$pvalue_delta
+p.delta.alt  <- simulation(data=twoNewsGroups,null_hyp=FALSE,delta=delta)$pvalue_delta
+
+#Plot:
+par(xpd=TRUE)
+matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)),
+        type="l",lty=1,ylab="p.delta",main="P-Value Curves for Simulation",
+         col=c( rep("red",nrow(p.delta.null)), rep("blue",nrow(p.delta.alt))))
+legend(55, .9, legend=c("null hypothesis", "alternative"),
+        col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
+```
+
+TODO: Provide some comments here about the plots.
+

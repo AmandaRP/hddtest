@@ -44,6 +44,7 @@ result <- multinom.test(x=data[[1]],y=data[[2]])
 #Return power of test at the alpha=0.05 level:
 alpha <- 0.05
 mean(result$pvalue<alpha)
+
 }
 \seealso{
 Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High

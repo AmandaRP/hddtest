@@ -111,6 +111,7 @@ matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)),
         col=c( rep("red",nrow(p.delta.null)), rep("blue",nrow(p.delta.alt))))
 legend(55, .9, legend=c("null hypothesis", "alternative"),
        col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
+
 }
 \seealso{
 \code{\link{multinom.test}}

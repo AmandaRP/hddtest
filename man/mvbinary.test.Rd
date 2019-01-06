@@ -66,6 +66,7 @@ names(binData) <- names(twoNewsGroups)
 #mvbinary.test(binData[[1]],binData[[2]])
 #require(magrittr)
 #binData \%>\% mvbinary.test
+
 }
 \seealso{
 Amanda Plunkett & Junyong Park (2017), \emph{Two-sample Tests for Sparse

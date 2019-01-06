@@ -69,4 +69,5 @@ lapply(X,dim)
 
 #Proportion of entries less than 5 in the first dataset:
 sum(X[[1]]<5)/(nrow(X[[1]])*ncol(X[[1]]))
+
 }
