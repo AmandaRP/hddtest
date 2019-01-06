@@ -82,7 +82,7 @@ simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
 
 Now run simulation for varying values of delta and plot the results:
 
-```{r}
+```{r, fig.width=6.5, fig.height=3.5}
 delta <- 1:160
 p.delta.null <- simulation(data=twoNewsGroups,null_hyp=TRUE,delta=delta)$pvalue_delta
 p.delta.alt  <- simulation(data=twoNewsGroups,null_hyp=FALSE,delta=delta)$pvalue_delta
@@ -96,5 +96,11 @@ legend(55, .9, legend=c("null hypothesis", "alternative"),
         col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
 ```
 
-TODO: Provide some comments here about the plots. Make plot wider.
+Notice in the plot above that for delta in the range of 50 to 100, the p-value (p.delta) is large when the null hypothesis is true (red curves) and small when the null hypothesis is false (blue curves). So, our previous choice of delta=60 seems reasonable.
+
+TODO:  
+How to access vignette from package?
+Delete extra stuff from example from multinom.neighborhood.test
+Add reference to hddtest.R
+
 
