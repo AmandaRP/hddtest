@@ -58,6 +58,8 @@
 #' #mvbinary.test(binData[[1]],binData[[2]])
 #' #require(magrittr)
 #' #binData %>% mvbinary.test
+#'
+#' @export
 mvbinary.test <- function(x,y=NULL,numPerms=5000){
 
   if(!is.null(y) ){
@@ -199,6 +201,8 @@ get_stat <- function(X,n=NULL,d=NULL){
 #' #Test whether the two datasets were generated using the same mean:
 #' result <- mvbinary.test(binData,numPerms=1000)
 #' result$pvalue
+#'
+#' @export
 genMVBinaryData <- function(n=c(30,30),d=2000,null_hyp=TRUE,r=0.3,epsilon=0.2,sigma=c(0.3,0.1),gamma=0.3,p0=0.1){
 
   m <- length(n) #num groups

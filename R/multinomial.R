@@ -39,7 +39,8 @@
 #' #Return power of test at the alpha=0.05 level:
 #' alpha <- 0.05
 #' mean(result$pvalue<alpha)
-
+#'
+#' @export
 multinom.test <- function(x,y=NULL){
 
   if(!is.null(y) ){
@@ -234,7 +235,8 @@ multinom.test <- function(x,y=NULL){
 #'         col=c( rep("red",nrow(p.delta.null)), rep("blue",nrow(p.delta.alt))))
 #' legend(55, .9, legend=c("null hypothesis", "alternative"),
 #'        col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
-
+#'
+#' @export
 multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
 
   if(is.null(delta) | any(delta <=0)){
@@ -304,6 +306,8 @@ multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
 #'
 #' #Proportion of entries less than 5 in the first dataset:
 #' sum(X[[1]]<5)/(nrow(X[[1]])*ncol(X[[1]]))
+#'
+#' @export
 genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),
                                sample_size=30,expID=1,alpha=0.45,m=1000,
                                numzero=50,...){
