@@ -47,16 +47,17 @@
 #'
 #' @examples
 #' #Binarize the twoNewsGroups dataset:
+#' data(twoNewsGroups)
 #' binData <- list(twoNewsGroups[[1]]>0,twoNewsGroups[[2]]>0)
 #' names(binData) <- names(twoNewsGroups)
 #'
 #' #Perform the test:
-#' mvbinary.test(binData)
+#' #mvbinary.test(binData)
 #'
 #' #The following are equivalent to the previous call:
-#' mvbinary.test(binData[[1]],binData[[2]])
-#' require(magrittr)
-#' binData %>% mvbinary.test
+#' #mvbinary.test(binData[[1]],binData[[2]])
+#' #require(magrittr)
+#' #binData %>% mvbinary.test
 mvbinary.test <- function(x,y=NULL,numPerms=5000){
 
   if(!is.null(y) ){
@@ -196,7 +197,8 @@ get_stat <- function(X,n=NULL,d=NULL){
 #' lapply(binData,dim)
 #'
 #' #Test whether the two datasets were generated using the same mean:
-#' mvbinary.test(binData)
+#' result <- mvbinary.test(binData,numPerms=100)
+#' result$pvalue
 genMVBinaryData <- function(n=c(30,30),d=2000,null_hyp=TRUE,r=0.3,epsilon=0.2,sigma=c(0.3,0.1),gamma=0.3,p0=0.1){
 
   m <- length(n) #num groups
