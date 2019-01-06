@@ -11,7 +11,7 @@ multinom.neighborhood.test(x, y = NULL, delta = NULL)
 integer vector observations as rows). \code{x} and \code{y} must be the
 same type and dimension. If \code{x} and \code{y} are matrices (or
 dataframes), the \eqn{i^th} row of \code{x} will be tested against the
-\eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
+\eqn{j^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
 Alternatively, \code{x} can be a list of two vectors, matrices, or
 dataframes to be compared. In this case, \code{y} is NULL by default.}
 
@@ -19,12 +19,12 @@ dataframes to be compared. In this case, \code{y} is NULL by default.}
 }
 \value{
 The \code{statistic} from \code{multinom.test} and its
-associated \code{p_delta}, where \eqn{p_delta = 1 - pnorm(T - delta)}.
+associated \code{p_delta}, where \code{p_delta} \eqn{= 1 - pnorm(T - delta)}.
 If \code{x} and \code{y} are two dimensional (that is, they are matrices
 or dataframes with more than one row) and/or \code{delta} is a vector,
-then a matrix will be returned where the \eqn{i,j^{th}} entry will be the
-\code{p.delta} associated with the \eqn{i^{th}} row of \code{x} (and
-\code{y}) and the \eqn{j^{th}} entry of the \code{delta} vector.
+then a matrix will be returned where the \eqn{(i,j)^{th}} entry will be the
+\code{p.delta} associated with the \eqn{i^{th}} rows of \code{x} and
+\code{y} and the \eqn{j^{th}} entry of the \code{delta} vector.
 }
 \description{
 Peforms the test for two multinomial vectors
@@ -36,8 +36,8 @@ not.
 In testing the equality of parameters from two populations
 (as in \code{multinom.test}),
 it frequenly happens that the null hypothesis is rejected even though the estimates
-of effect sizes are close to each other. However, these differences are so small
-that the parameters may not be considered different in practice. A neighborhood test
+of effect sizes are close to each other. However, these differences may be so small
+that the parameters are not considered different in practice. A neighborhood test
 is useful in this situation.
 }
 \examples{
@@ -113,7 +113,9 @@ legend(55, .9, legend=c("null hypothesis", "alternative"),
        col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
 }
 \seealso{
-Amanda Plunkett & Junyong Park (2018) \emph{Two-Sample Test for Sparse High
+\code{\link{multinom.test}}
+
+Amanda Plunkett & Junyong Park (2018), \emph{Two-Sample Test for Sparse High
 Dimensional Multinomial Distributions}, TEST,
 \url{https://doi.org/10.1007/s11749-018-0600-8}
 }
