@@ -46,21 +46,26 @@ A null distribution is constructed and used to calcualate the p-value.
 \section{Warning}{
 
 As described in the reference below, this method may not perform
-well on highly correlated variables.
+well (low power) on highly correlated variables.
+
+Also, note that for large values of \code{numPerms}, run time may be long.
+However, larger values of \code{numPerms} produce more accurate estimates
+of the p-value.
 }
 
 \examples{
 #Binarize the twoNewsGroups dataset:
+data(twoNewsGroups)
 binData <- list(twoNewsGroups[[1]]>0,twoNewsGroups[[2]]>0)
 names(binData) <- names(twoNewsGroups)
 
 #Perform the test:
-mvbinary.test(binData)
+#mvbinary.test(binData)
 
 #The following are equivalent to the previous call:
-mvbinary.test(binData[[1]],binData[[2]])
-require(magrittr)
-binData \%>\% mvbinary.test
+#mvbinary.test(binData[[1]],binData[[2]])
+#require(magrittr)
+#binData \%>\% mvbinary.test
 }
 \seealso{
 Amanda Plunkett & Junyong Park (2017), \emph{Two-sample Tests for Sparse

@@ -4,7 +4,7 @@
 \alias{genMVBinaryData}
 \title{Generate multivariate binary data}
 \usage{
-genMVBinaryData(n = 30, d = 2000, null_hyp = TRUE, r = 0.3,
+genMVBinaryData(n = c(30, 30), d = 2000, null_hyp = TRUE, r = 0.3,
   epsilon = 0.2, sigma = c(0.3, 0.1), gamma = 0.3, p0 = 0.1)
 }
 \arguments{
@@ -63,20 +63,21 @@ The \eqn{(i,j)^{th}} entry of the \eqn{c^{th}} matrix is \eqn{X_{cij} = (1 - U_{
 }
 }
 \examples{
-binData <- genMVBinaryData(n=,d=,null_hyp=FALSE,)
+binData <- genMVBinaryData(null_hyp=TRUE)$X
 
 #Check the dimension of each matrix:
 lapply(binData,dim)
 
 #Test whether the two datasets were generated using the same mean:
-mvbinary.test(binData)
+result <- mvbinary.test(binData,numPerms=1000)
+result$pvalue
 }
 \seealso{
-Amanda Plunkett & Junyong Park (2017) \emph{Two-sample tests for sparse
+Amanda Plunkett & Junyong Park (2017), \emph{Two-sample tests for sparse
 high-dimensional binary data}, Communications in Statistics - Theory and
 Methods, 46:22, 11181-11193
 
-Junyong Park & J. Davis (2011) \emph{Estimating and testing conditional sums
+Junyong Park & J. Davis (2011), \emph{Estimating and testing conditional sums
 of means in high dimensional multivariate binary data}, Journal of Statistical
 Planning and Inference, 141:1021-1030
 }
