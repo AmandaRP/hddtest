@@ -97,9 +97,6 @@ legend(55, .9, legend=c("null hypothesis", "alternative"),
 
 Notice in the plot above that for delta in the range of 50 to 100, the p-value (p.delta) is large when the null hypothesis is true (red curves) and small when the null hypothesis is false (blue curves). So, our previous choice of delta=60 seems reasonable.
 
-TODO:  
-How to access vignette from package?
-Delete extra stuff from example from multinom.neighborhood.test
-Add reference to hddtest.R
+
 
 

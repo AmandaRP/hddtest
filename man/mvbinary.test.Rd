@@ -19,12 +19,12 @@ Default value is 5000.}
 \value{
 A list containing the computed \code{statistic}, a list of statistics
 (\code{null.statistics}) used to construct the null distritubution (from the
-permutation method), and the associated \code{p-value}. The \code{p-value} is
+permutation method), and the associated \code{pvalue}. The \code{pvalue} is
 the percent of \code{null.statistics} that are more extreme than the
 \code{statistic} computed from the original dataset.
 }
 \description{
-Peforms the test for two binary vectors
+Peforms a two-sample test for two binary vectors
 testing \eqn{H_0:} the underlying probability vectors are the
 same vs. \eqn{H_1:} they are different.
 }
@@ -54,18 +54,19 @@ of the p-value.
 }
 
 \examples{
-#Binarize the twoNewsGroups dataset:
+# Binarize the twoNewsGroups dataset:
 data(twoNewsGroups)
-binData <- list(twoNewsGroups[[1]]>0,twoNewsGroups[[2]]>0)
+binData <- list(twoNewsGroups[[1]] > 0, twoNewsGroups[[2]] > 0)
 names(binData) <- names(twoNewsGroups)
 
-#Perform the test:
-#mvbinary.test(binData)
+# Perform the test:
+result <- mvbinary.test(binData)
+result$pvalue
 
-#The following are equivalent to the previous call:
-#mvbinary.test(binData[[1]],binData[[2]])
-#require(magrittr)
-#binData \%>\% mvbinary.test
+# The following are equivalent to the previous test:
+result <- mvbinary.test(binData[[1]], binData[[2]])
+require(magrittr)
+result <- binData \%>\% mvbinary.test
 
 }
 \seealso{

@@ -9,7 +9,7 @@ genMVBinaryData(n = c(30, 30), d = 2000, null_hyp = TRUE, r = 0.3,
 }
 \arguments{
 \item{n}{Vector of length 2 containing group size (i.e. number of samples) for
-each group. Default value is (30,30).}
+each group. Default value is (30, 30).}
 
 \item{d}{Number of variables (dimension) of the data to be generated.
 Default value is 2000.}
@@ -33,17 +33,15 @@ probability vectors. See details below. Default value is (0.3,0.1).}
 Default value is 0.3.}
 }
 \value{
-A list containing the following components:
+\code{X}: List of two n by d matrices each containing the generated datasets.
 
-X List of two n by d matrices each containing the generated datasets.
+\code{p}: The probability vectors used to generate the two datasets.
 
-p The probability vectors used to generate the two datasets.
+\code{null_hyp}: Value of the \code{null_hyp} parameter.
 
-null_hyp Value of the \code{null_hyp} parameter.
+\code{r}: Value of the \code{r} parameter.
 
-r Value of the \code{r} parameter.
-
-epsilon Value of the \code{epsilon} parameter.
+\code{epsilon}: Value of the \code{epsilon} parameter.
 }
 \description{
 Randomly generate a list of two matrices containing multivariate binary data.
@@ -63,14 +61,10 @@ The \eqn{(i,j)^{th}} entry of the \eqn{c^{th}} matrix is \eqn{X_{cij} = (1 - U_{
 }
 }
 \examples{
-binData <- genMVBinaryData(null_hyp=TRUE)$X
+binData <- genMVBinaryData(null_hyp = TRUE)$X
 
-#Check the dimension of each matrix:
-lapply(binData,dim)
-
-#Test whether the two datasets were generated using the same mean:
-result <- mvbinary.test(binData,numPerms=1000)
-result$pvalue
+# Check the dimension of each matrix:
+lapply(binData, dim)
 
 }
 \seealso{

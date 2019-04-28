@@ -21,7 +21,7 @@ If \code{x} and \code{y} are either matrices or dataframes, a
 \code{statistic} and \code{p-value} will be returned for each row.
 }
 \description{
-Peforms the test for two multinomial vectors
+Peforms a two-sample test for two multinomial vectors
 testing \eqn{H_0:} the underlying multinomial probability vectors are the
 same vs. \eqn{H_1:} they are different.
 }
@@ -29,8 +29,8 @@ same vs. \eqn{H_1:} they are different.
 #Generate two vectors from the same distribution:
 data <- genMultinomialData(sample_size=1)
 
-#Perform test (the following calls are equivalent):
-multinom.test(x=data[[1]],y=data[[2]])
+#Perform test (the following three calls of multinom.test are equivalent):
+multinom.test(x=data[[1]], y=data[[2]])
 multinom.test(data)
 library(magrittr)
 data \%>\% multinom.test()

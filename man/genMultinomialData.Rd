@@ -65,7 +65,7 @@ available in addition to user-specified probability vector \code{p}:
 X <- genMultinomialData(FALSE)
 
 #Dimension of the two generated datasets:
-lapply(X,dim)
+lapply(X, dim)
 
 #Proportion of entries less than 5 in the first dataset:
 sum(X[[1]]<5)/(nrow(X[[1]])*ncol(X[[1]]))

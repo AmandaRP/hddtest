@@ -25,7 +25,7 @@ Generate two multinomial vectors and test whether they come from the same underl
 data <- genMultinomialData(null_hyp=FALSE, sample_size = 1)
 multinom.test(x=data[[1]], y=data[[2]])
 #> $statistic
-#> [1] 10.59307
+#> [1] 11.545
 #> 
 #> $pvalue
 #> [1] 0
@@ -36,7 +36,7 @@ The last call can also be done using the `magrittr` forward pipe:
 ``` r
 data %>% multinom.test
 #> $statistic
-#> [1] 10.59307
+#> [1] 11.545
 #> 
 #> $pvalue
 #> [1] 0

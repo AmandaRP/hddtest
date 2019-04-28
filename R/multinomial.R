@@ -1,7 +1,7 @@
 
 #' Test two multinomial datasets
 #'
-#' Peforms the test for two multinomial vectors
+#' Peforms a two-sample test for two multinomial vectors
 #' testing \eqn{H_0:} the underlying multinomial probability vectors are the
 #' same vs. \eqn{H_1:} they are different.
 #'
@@ -24,8 +24,8 @@
 #' #Generate two vectors from the same distribution:
 #' data <- genMultinomialData(sample_size=1)
 #'
-#' #Perform test (the following calls are equivalent):
-#' multinom.test(x=data[[1]],y=data[[2]])
+#' #Perform test (the following three calls of multinom.test are equivalent):
+#' multinom.test(x=data[[1]], y=data[[2]])
 #' multinom.test(data)
 #' library(magrittr)
 #' data %>% multinom.test()
@@ -41,10 +41,10 @@
 #' mean(result$pvalue<alpha)
 #'
 #' @export
-multinom.test <- function(x,y=NULL){
+multinom.test <- function(x, y=NULL){
 
   if(!is.null(y) ){
-    data <- list(x,y)
+    data <- list(x, y)
   }else if(class(x)=="list"){
     data <- x
   }else{
@@ -66,7 +66,7 @@ multinom.test <- function(x,y=NULL){
   }
 
 
-  if((is.data.frame( data[[1]] ) || is.matrix( data[[1]] )) && nrow( data[[1]] )>1  ){
+  if((is.data.frame( data[[1]] ) || is.matrix( data[[1]] )) && nrow( data[[1]] ) > 1  ){
     multipleSamples <- TRUE
   }else{
     multipleSamples <- FALSE
@@ -117,7 +117,7 @@ multinom.test <- function(x,y=NULL){
 
   stat_pvalue <- 1-pnorm(stat)
 
-  return(list(statistic=stat,pvalue=stat_pvalue))
+  return(list(statistic=stat, pvalue=stat_pvalue))
 }
 
 
@@ -127,7 +127,7 @@ multinom.test <- function(x,y=NULL){
 
 #' Perform the neighborhood test for multinom.test
 #'
-#' Peforms the test for two multinomial vectors
+#' Peforms the two sample test for two multinomial vectors
 #' testing \eqn{H_0:} the underlying multinomial probability vectors
 #' are within some neighborhood of one another vs. \eqn{H_1:} they are
 #' not.
@@ -144,7 +144,7 @@ multinom.test <- function(x,y=NULL){
 #' integer vector observations as rows). \code{x} and \code{y} must be the
 #' same type and dimension. If \code{x} and \code{y} are matrices (or
 #' dataframes), the \eqn{i^th} row of \code{x} will be tested against the
-#' \eqn{j^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
+#' \eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
 #' Alternatively, \code{x} can be a list of two vectors, matrices, or
 #' dataframes to be compared. In this case, \code{y} is NULL by default.
 #' @param delta A number (or vector) greater than 0.
@@ -158,7 +158,7 @@ multinom.test <- function(x,y=NULL){
 #' \code{y} and the \eqn{j^{th}} entry of the \code{delta} vector.
 #'
 #' @seealso
-#' \code{\link{multinom.test}}
+#' \code{\link{multinom.test}}, \code{vignette("multinomial-neighborhood-test-vignette")}
 #'
 #' Amanda Plunkett & Junyong Park (2018), \emph{Two-Sample Test for Sparse High
 #' Dimensional Multinomial Distributions}, TEST,
@@ -167,90 +167,53 @@ multinom.test <- function(x,y=NULL){
 #' @examples
 #' require(magrittr)
 #'
-#' #Load the twoNewsGroups dataset
+#' # Load the twoNewsGroups dataset
 #'
 #' data(twoNewsGroups)
 #'
-#' #Sample two sets of 200 documents from the sci.med newsGroup (to simulate
-#' #    the null hypothesis being TRUE). For each of the two groups, sum the
-#' #    200 term frequency vectors together. They will be the two vectors that
-#' #    we test.
+#' # Sample two sets of 200 documents from the sci.med newsGroup (to simulate
+#' # the null hypothesis being TRUE). For each of the two groups, sum the
+#' # 200 term frequency vectors together. They will be the two vectors that
+#' # we test.
 #'
 #' num_docs <- 200
-#' vecs2Test <- list(NA,2)
-#' rowIDS <- 1:nrow(twoNewsGroups$sci.med)
-#' group_1 <- sample(rowIDS,num_docs)
-#' group_2 <- sample(rowIDS[-group_1],num_docs)
+#' vecs2test <- list(NA, 2)
+#' row_ids <- 1:nrow(twoNewsGroups$sci.med)
+#' group_1 <- sample(row_ids, num_docs)
+#' group_2 <- sample(row_ids[-group_1], num_docs)
 #'
-#' vecs2Test[[1]] <- twoNewsGroups$sci.med[group_1,] %>%
+#' vecs2test[[1]] <- twoNewsGroups$sci.med[group_1,] %>%
 #'                                     colSums() %>% matrix(nrow=1)
-#' vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2,] %>%
+#' vecs2test[[2]] <- twoNewsGroups$sci.med[group_2,] %>%
 #'                                     colSums() %>% matrix(nrow=1)
 #'
-#' #Test the null that the two vectors come from the same distribution
-#' #    (i.e. the same news group)
+#' # Test the null that the two vectors come from the same distribution
+#' # (i.e. the same news group)
 #'
-#' vecs2Test %>% multinom.test()
+#' vecs2test %>% multinom.test()
 #'
-#' #The above test likely produced a significant p-value meaning that we would
-#' #    reject the null. However, the difference isn't very interesting. Instead,
-#' #    test that the differences are within some neighborhood:
+#' # The above test likely produced a significant p-value meaning that we would
+#' # reject the null. However, the difference isn't very interesting. Instead,
+#' # test that the differences are within some neighborhood:
 #'
-#' vecs2Test %>% multinom.neighborhood.test(delta=60)
+#' vecs2test %>% multinom.neighborhood.test(delta=60)
 #'
-#' #How to choose the appropriate delta? The answer may come from subject
-#' #    matter expertise about the problem domain. Or, run a simulation to
-#' #    gain insight:
-#'
-#' #Simulation function:
-#' simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
-#'   vecs2Test <- list( matrix(NA,reps,ncol(data[[1]])), matrix(NA,reps,ncol(data[[1]])) )
-#'   for(i in 1:reps){
-#'     if(null_hyp){
-#'       rowIDS <- 1:nrow(data[[2]])
-#'       group_1 <- sample(rowIDS,num_docs[2])
-#'       group_2 <- sample(rowIDS[-group_1],num_docs[2])
-#'       vecs2Test[[1]][i,] <- data[[2]][group_1,] %>% colSums()
-#'       vecs2Test[[2]][i,] <- data[[2]][group_2,] %>% colSums()
-#'     }else{
-#'       vecs2Test[[1]][i,] <- data[[1]][sample(1:nrow(data[[1]]),num_docs[1]),] %>%
-#'                                      colSums()
-#'       vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]),num_docs[2]),] %>%
-#'                                      colSums()
-#'     }
-#'   }
-#'   result <- vecs2Test %>% multinom.neighborhood.test(delta=delta)
-#' } #end simulation function
-#'
-#' #Run simulation for varying values of delta:
-#'
-#' delta <- 1:160
-#' p.delta.null <- simulation(data=twoNewsGroups,null_hyp=TRUE,delta=delta)$pvalue_delta
-#' p.delta.alt  <- simulation(data=twoNewsGroups,null_hyp=FALSE,delta=delta)$pvalue_delta
-#'
-#' #Plot:
-#' par(xpd=TRUE)
-#' matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)),
-#'         type="l",lty=1,ylab="p.delta",main="P-Value Curves for Simulation",
-#'         col=c( rep("red",nrow(p.delta.null)), rep("blue",nrow(p.delta.alt))))
-#' legend(55, .9, legend=c("null hypothesis", "alternative"),
-#'        col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
 #'
 #' @export
-multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
+multinom.neighborhood.test <- function(x, y=NULL, delta=NULL){
 
   if(is.null(delta) | any(delta <=0)){
     stop("Please specify delta>0")
   }
-  result <- multinom.test(x,y)
+  result <- multinom.test(x, y)
 
   #subtract every value of delta from every value of the statistic:
-  diff <- lapply(X=result$statistic,FUN=function(X,delta){X-delta},delta=delta)
+  diff <- lapply(X=result$statistic, FUN=function(X, delta){X-delta}, delta=delta)
 
-  mat <- matrix(unlist(diff),length(diff),length(delta),byrow=TRUE)
+  mat <- matrix(unlist(diff), length(diff), length(delta), byrow=TRUE)
   p_delta <- 1 - pnorm(q=mat)
 
-  return(list(statistic=result$statistic,pvalue_delta=p_delta))
+  return(list(statistic=result$statistic, pvalue_delta=p_delta))
 
 }
 
@@ -302,19 +265,19 @@ multinom.neighborhood.test <- function(x,y=NULL,delta=NULL){
 #' X <- genMultinomialData(FALSE)
 #'
 #' #Dimension of the two generated datasets:
-#' lapply(X,dim)
+#' lapply(X, dim)
 #'
 #' #Proportion of entries less than 5 in the first dataset:
 #' sum(X[[1]]<5)/(nrow(X[[1]])*ncol(X[[1]]))
 #'
 #' @export
-genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),
-                               sample_size=30,expID=1,alpha=0.45,m=1000,
+genMultinomialData <- function(null_hyp=TRUE, p=NULL, k=2000, n=c(8000,8000),
+                               sample_size=30, expID=1, alpha=0.45, m=1000,
                                numzero=50,...){
 
   #Generate p if it is not given
   if(is.null(p)){
-    p <- matrix(NA,2,k)
+    p <- matrix(NA, 2, k)
     sum <- 0
 
     #First group:
@@ -364,7 +327,7 @@ genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),
 
         #Zero some out and make the rest uniform:
         num_nonzero = k-numzero
-        p[2,1:num_nonzero] <- rep(1/num_nonzero,times=num_nonzero)
+        p[2,1:num_nonzero] <- rep(1/num_nonzero, times=num_nonzero)
         p[2,(num_nonzero+1):k] <- 0
 
       }
@@ -382,7 +345,7 @@ genMultinomialData <- function(null_hyp=TRUE,p=NULL,k=2000,n=c(8000,8000),
   #Generate data
   X <- list()
   for(g in 1:2){
-    X[[g]] <- t(rmultinom(sample_size,n[g],p[g,]))
+    X[[g]] <- t(rmultinom(sample_size, n[g], p[g,]))
   }
 
   return(X)

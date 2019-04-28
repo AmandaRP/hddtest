@@ -11,7 +11,7 @@ multinom.neighborhood.test(x, y = NULL, delta = NULL)
 integer vector observations as rows). \code{x} and \code{y} must be the
 same type and dimension. If \code{x} and \code{y} are matrices (or
 dataframes), the \eqn{i^th} row of \code{x} will be tested against the
-\eqn{j^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
+\eqn{i^th} row of \code{y} for all \eqn{i} in 1..\code{nrow(x)}.
 Alternatively, \code{x} can be a list of two vectors, matrices, or
 dataframes to be compared. In this case, \code{y} is NULL by default.}
 
@@ -27,7 +27,7 @@ then a matrix will be returned where the \eqn{(i,j)^{th}} entry will be the
 \code{y} and the \eqn{j^{th}} entry of the \code{delta} vector.
 }
 \description{
-Peforms the test for two multinomial vectors
+Peforms the two sample test for two multinomial vectors
 testing \eqn{H_0:} the underlying multinomial probability vectors
 are within some neighborhood of one another vs. \eqn{H_1:} they are
 not.
@@ -43,78 +43,41 @@ is useful in this situation.
 \examples{
 require(magrittr)
 
-#Load the twoNewsGroups dataset
+# Load the twoNewsGroups dataset
 
 data(twoNewsGroups)
 
-#Sample two sets of 200 documents from the sci.med newsGroup (to simulate
-#    the null hypothesis being TRUE). For each of the two groups, sum the
-#    200 term frequency vectors together. They will be the two vectors that
-#    we test.
+# Sample two sets of 200 documents from the sci.med newsGroup (to simulate
+# the null hypothesis being TRUE). For each of the two groups, sum the
+# 200 term frequency vectors together. They will be the two vectors that
+# we test.
 
 num_docs <- 200
-vecs2Test <- list(NA,2)
-rowIDS <- 1:nrow(twoNewsGroups$sci.med)
-group_1 <- sample(rowIDS,num_docs)
-group_2 <- sample(rowIDS[-group_1],num_docs)
+vecs2test <- list(NA, 2)
+row_ids <- 1:nrow(twoNewsGroups$sci.med)
+group_1 <- sample(row_ids, num_docs)
+group_2 <- sample(row_ids[-group_1], num_docs)
 
-vecs2Test[[1]] <- twoNewsGroups$sci.med[group_1,] \%>\%
+vecs2test[[1]] <- twoNewsGroups$sci.med[group_1,] \%>\%
                                     colSums() \%>\% matrix(nrow=1)
-vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2,] \%>\%
+vecs2test[[2]] <- twoNewsGroups$sci.med[group_2,] \%>\%
                                     colSums() \%>\% matrix(nrow=1)
 
-#Test the null that the two vectors come from the same distribution
-#    (i.e. the same news group)
+# Test the null that the two vectors come from the same distribution
+# (i.e. the same news group)
 
-vecs2Test \%>\% multinom.test()
+vecs2test \%>\% multinom.test()
 
-#The above test likely produced a significant p-value meaning that we would
-#    reject the null. However, the difference isn't very interesting. Instead,
-#    test that the differences are within some neighborhood:
+# The above test likely produced a significant p-value meaning that we would
+# reject the null. However, the difference isn't very interesting. Instead,
+# test that the differences are within some neighborhood:
 
-vecs2Test \%>\% multinom.neighborhood.test(delta=60)
+vecs2test \%>\% multinom.neighborhood.test(delta=60)
 
-#How to choose the appropriate delta? The answer may come from subject
-#    matter expertise about the problem domain. Or, run a simulation to
-#    gain insight:
-
-#Simulation function:
-simulation <- function(data,null_hyp,delta,reps=10,num_docs=c(200,200)){
-  vecs2Test <- list( matrix(NA,reps,ncol(data[[1]])), matrix(NA,reps,ncol(data[[1]])) )
-  for(i in 1:reps){
-    if(null_hyp){
-      rowIDS <- 1:nrow(data[[2]])
-      group_1 <- sample(rowIDS,num_docs[2])
-      group_2 <- sample(rowIDS[-group_1],num_docs[2])
-      vecs2Test[[1]][i,] <- data[[2]][group_1,] \%>\% colSums()
-      vecs2Test[[2]][i,] <- data[[2]][group_2,] \%>\% colSums()
-    }else{
-      vecs2Test[[1]][i,] <- data[[1]][sample(1:nrow(data[[1]]),num_docs[1]),] \%>\%
-                                     colSums()
-      vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]),num_docs[2]),] \%>\%
-                                     colSums()
-    }
-  }
-  result <- vecs2Test \%>\% multinom.neighborhood.test(delta=delta)
-} #end simulation function
-
-#Run simulation for varying values of delta:
-
-delta <- 1:160
-p.delta.null <- simulation(data=twoNewsGroups,null_hyp=TRUE,delta=delta)$pvalue_delta
-p.delta.alt  <- simulation(data=twoNewsGroups,null_hyp=FALSE,delta=delta)$pvalue_delta
-
-#Plot:
-par(xpd=TRUE)
-matplot(delta, cbind(t(p.delta.null), t(p.delta.alt)),
-        type="l",lty=1,ylab="p.delta",main="P-Value Curves for Simulation",
-        col=c( rep("red",nrow(p.delta.null)), rep("blue",nrow(p.delta.alt))))
-legend(55, .9, legend=c("null hypothesis", "alternative"),
-       col=c("red", "blue"), lty=1, cex=0.8,box.lty=0)
 
 }
 \seealso{
-\code{\link{multinom.test}}
+\code{\link{multinom.test}}, \code{vignette("multinomial-neighborhood-test-vignette")}
 
 Amanda Plunkett & Junyong Park (2018), \emph{Two-Sample Test for Sparse High
 Dimensional Multinomial Distributions}, TEST,

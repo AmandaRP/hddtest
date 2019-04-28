@@ -31,7 +31,7 @@ Multinomial Neighborhood Test
 
 \section{Authors}{
 
-Amanda Peterson-Plunkett
+Amanda Plunkett
 }
 
 \section{References}{
