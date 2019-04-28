@@ -54,11 +54,12 @@ See help documentation on each of the following via `?functionname`
 * genMVBinaryData
 * twoNewsGroups
 
+
 ## Vignette
 
 Read more about the multinomial neighborhood test:
 
-```{r}
+```{r, eval = FALSE}
 vignette("multinomial-neighborhood-test-vignette")
 ```
 
