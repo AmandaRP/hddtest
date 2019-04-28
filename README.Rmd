@@ -24,7 +24,7 @@ You can install hddtest from github with:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
-devtools::install_github("AmandaRP/hddtest")
+devtools::install_github("AmandaRP/hddtest", build_vignettes = TRUE)
 library("hddtest")
 ```
 
@@ -33,8 +33,8 @@ library("hddtest")
 Generate two multinomial count vectors and test whether they come from the same underlying distribution:
 
 ```{r example}
-data <- genMultinomialData(null_hyp=FALSE,sample_size = 1)
-multinom.test(x=data[[1]],y=data[[2]])
+data <- genMultinomialData(null_hyp=FALSE, sample_size = 1)
+multinom.test(x=data[[1]], y=data[[2]])
 ```
 
 The last call can also be done using the `magrittr` forward pipe:
@@ -45,12 +45,22 @@ data %>% multinom.test
 
 ## Available functions and datasets
 
+See help documentation on each of the following via `?functionname`
+
 * multinom.test
 * multinom.neighborhood.test
 * genMultinomialData
 * mvbinary.test
 * genMVBinaryData
 * twoNewsGroups
+
+## Vignette
+
+Read more about the multinomial neighborhood test:
+
+```{r}
+vignette("multinomial-neighborhood-test-vignette")
+```
 
 ## References
 

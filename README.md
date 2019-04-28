@@ -14,7 +14,7 @@ You can install hddtest from github with:
 
 ``` r
 install.packages("devtools")
-devtools::install_github("AmandaRP/hddtest")
+devtools::install_github("AmandaRP/hddtest", build_vignettes = TRUE)
 library("hddtest")
 ```
 
@@ -53,6 +53,12 @@ Available functions and datasets
 -   mvbinary.test
 -   genMVBinaryData
 -   twoNewsGroups
+
+Available functions and datasets
+--------------------------------
+
+vignette("multinomial-neighborhood-test-vignette")
+
 
 References
 ----------
