@@ -1,14 +1,5 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-    ## Loading hddtest
-
-    ## 
-    ## Attaching package: 'testthat'
-
-    ## The following objects are masked from 'package:magrittr':
-    ## 
-    ##     equals, is_less_than, not
-
 hddtest
 =======
 
@@ -34,10 +25,10 @@ Generate two multinomial count vectors and test whether they come from the same 
 data <- genMultinomialData(null_hyp=FALSE, sample_size = 1)
 multinom.test(x=data[[1]], y=data[[2]])
 #> $statistic
-#> [1] 7.019512
+#> [1] 8.284791
 #> 
 #> $pvalue
-#> [1] 1.113221e-12
+#> [1] 1.110223e-16
 ```
 
 The last call can also be done using the `magrittr` forward pipe:
@@ -45,10 +36,10 @@ The last call can also be done using the `magrittr` forward pipe:
 ``` r
 data %>% multinom.test
 #> $statistic
-#> [1] 7.019512
+#> [1] 8.284791
 #> 
 #> $pvalue
-#> [1] 1.113221e-12
+#> [1] 1.110223e-16
 ```
 
 Available functions and datasets
