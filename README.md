@@ -19,16 +19,16 @@ library("hddtest")
 Example
 -------
 
-Generate two multinomial count vectors and test whether they come from the same underlying distribution:
+Generate two multinomial vectors and test whether they come from the same underlying distribution:
 
 ``` r
 data <- genMultinomialData(null_hyp=FALSE, sample_size = 1)
 multinom.test(x=data[[1]], y=data[[2]])
 #> $statistic
-#> [1] 8.284791
+#> [1] 10.59307
 #> 
 #> $pvalue
-#> [1] 1.110223e-16
+#> [1] 0
 ```
 
 The last call can also be done using the `magrittr` forward pipe:
@@ -36,10 +36,10 @@ The last call can also be done using the `magrittr` forward pipe:
 ``` r
 data %>% multinom.test
 #> $statistic
-#> [1] 8.284791
+#> [1] 10.59307
 #> 
 #> $pvalue
-#> [1] 1.110223e-16
+#> [1] 0
 ```
 
 Available functions and datasets
