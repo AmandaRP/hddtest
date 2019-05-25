@@ -12,7 +12,7 @@ You can install hddtest from github with:
 
 ``` r
 install.packages("devtools")
-devtools::install_github("AmandaRP/hddtest", build_vignettes = TRUE)
+devtools::install_github("AmandaRP/hddtest", build = TRUE, build_opts = c("--no-resave-data", "--no-manual"))
 library("hddtest")
 ```
 
@@ -25,7 +25,7 @@ Generate two multinomial vectors and test whether they come from the same underl
 data <- genMultinomialData(null_hyp=FALSE, sample_size = 1)
 multinom.test(x=data[[1]], y=data[[2]])
 #> $statistic
-#> [1] 11.545
+#> [1] 9.266349
 #> 
 #> $pvalue
 #> [1] 0
@@ -36,7 +36,7 @@ The last call can also be done using the `magrittr` forward pipe:
 ``` r
 data %>% multinom.test
 #> $statistic
-#> [1] 11.545
+#> [1] 9.266349
 #> 
 #> $pvalue
 #> [1] 0
