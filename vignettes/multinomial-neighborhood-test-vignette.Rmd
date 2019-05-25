@@ -50,7 +50,7 @@ Test the null hypothesis that the two vectors come from the same distribution (i
 vecs2Test %>% multinom.test()
 ```
 
-The above test likely produced a significant p-value meaning that we would reject the null. However, the difference isn't very interesting. Instead, test that the differences are within some neighborhood:
+The above test likely produced a significant p-value meaning that we would reject the null. However, the difference isn't very interesting. Instead, we could have tested that the differences are within some neighborhood:
 
 ```{r}
 vecs2Test %>% multinom.neighborhood.test(delta = 60)
