@@ -44,19 +44,13 @@ vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2, ] %>%
 ```
 
 
-Test the null hypothesis that the two vectors come from the same distribution (i.e. the same newsgroup).
-
-```{r}
-vecs2Test %>% multinom.test()
-```
-
-The above test likely produced a significant p-value meaning that we would reject the null. However, the difference isn't very interesting. Instead, we could have tested that the differences are within some neighborhood:
+Now test the null hypothesis that the associated multinomial probability vectors are within some neighborhood, delta, of each other (against the alternative that they are not). We can then use this result to infer whether the sets of documents are likely from the same newsgroup.
 
 ```{r}
 vecs2Test %>% multinom.neighborhood.test(delta = 60)
 ```
 
-How to choose the appropriate delta? The answer may come from subject matter expertise about the problem domain. Or you can run a simulation to gain insight. Below we define a simulation function. 
+Here we fail to reject the null hypothesis using a delta of 60. How to choose the appropriate delta? The answer may come from subject matter expertise about the problem domain. Or you can run a simulation to gain insight. Below we define a simulation function.
 
 ```{r}
 simulation <- function(data, null_hyp, delta, reps = 10, num_docs = c(200, 200)){
@@ -79,7 +73,7 @@ simulation <- function(data, null_hyp, delta, reps = 10, num_docs = c(200, 200))
 } #end simulation function
 ```
 
-Now run simulation for varying values of delta and plot the results:
+Now run the simulation for varying values of delta (in the range 1 to 160) testing both the null and alternative hypotheses for 30 replications each. For the null hypothesis simulation, we sample documents from the same newsgroup. For the simulation of the alternative hypotheis, we sample documents from the two different newsgroups. The resulting plot shows one curve for each the 60 simulations (which compute the p-value at each value of delta.)
 
 ```{r, fig.width=6.5, fig.height=3.5}
 delta <- 1:160
