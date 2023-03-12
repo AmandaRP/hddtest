@@ -1,8 +1,8 @@
 Package: hddtest
 Type: Package
 Title: Hypothesis Testing for High Dimensional Discrete Data 
-Version: 1.0.0
-Authors@R: person("Amanda", "Peterson-Plunkett", email = "amanplunkett@gmail.com", 
+Version: 1.0.1
+Authors@R: person("Amanda", "Peterson", email = "amanplunkett@gmail.com", 
   role=c("aut","cre"))
 Description: Methods for two sample hypothesis testing of multinomial 
     and multivariate binary data as described in described in "Two-sample tests for sparse high-dimensional binary data" (2017) and "Two-Sample Test for Sparse High Dimensional Multinomial Distributions" (2018) by  
@@ -10,10 +10,9 @@ Description: Methods for two sample hypothesis testing of multinomial
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
-    magrittr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
