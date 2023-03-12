@@ -52,7 +52,7 @@
 #' names(binData) <- names(twoNewsGroups)
 #'
 #' # Perform the test:
-#' result <- mvbinary.test(binData)
+#' result <- mvbinary.test(binData, numPerms = 100)
 #' result$pvalue
 #'
 #' # The following are equivalent to the previous test:
@@ -60,7 +60,7 @@
 #' result <- binData |> mvbinary.test()
 #'
 #' @export
-mvbinary.test <- function(x,y=NULL,numPerms=5000){
+mvbinary.test <- function(x, y=NULL, numPerms=5000){
 
   if(!is.null(y) ){
     data <- list(x, y)
