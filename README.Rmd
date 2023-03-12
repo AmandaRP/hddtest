@@ -10,7 +10,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
-library(magrittr)
 devtools::load_all()
 ```
 
@@ -40,7 +39,7 @@ multinom.test(x=data[[1]], y=data[[2]])
 The last call can also be done using the `magrittr` forward pipe:
 
 ```{r}
-data %>% multinom.test
+data |> multinom.test()
 ```
 
 ## Available functions and datasets
