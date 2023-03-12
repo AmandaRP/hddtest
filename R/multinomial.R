@@ -27,8 +27,7 @@
 #' #Perform test (the following three calls of multinom.test are equivalent):
 #' multinom.test(x=data[[1]], y=data[[2]])
 #' multinom.test(data)
-#' library(magrittr)
-#' data %>% multinom.test()
+#' data |> multinom.test()
 #'
 #' #Generate 1000 vectors from each of two different distributions:
 #' data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)
@@ -53,7 +52,7 @@ multinom.test <- function(x, y=NULL){
   }
 
   #check that x and y are the same structures:
-  if(class( data[[1]] ) != class( data[[2]] )){
+  if(any(class( data[[1]] ) != class( data[[2]] ))){
     stop("The structures being compared must be the same class")
   }
 
@@ -165,7 +164,6 @@ multinom.test <- function(x, y=NULL){
 #' \url{https://doi.org/10.1007/s11749-018-0600-8}
 #'
 #' @examples
-#' require(magrittr)
 #'
 #' # Load the twoNewsGroups dataset
 #'
@@ -182,21 +180,23 @@ multinom.test <- function(x, y=NULL){
 #' group_1 <- sample(row_ids, num_docs)
 #' group_2 <- sample(row_ids[-group_1], num_docs)
 #'
-#' vecs2test[[1]] <- twoNewsGroups$sci.med[group_1,] %>%
-#'                                     colSums() %>% matrix(nrow=1)
-#' vecs2test[[2]] <- twoNewsGroups$sci.med[group_2,] %>%
-#'                                     colSums() %>% matrix(nrow=1)
+#' vecs2test[[1]] <- twoNewsGroups$sci.med[group_1,] |>
+#'                     colSums() |>
+#'                     matrix(nrow=1)
+#' vecs2test[[2]] <- twoNewsGroups$sci.med[group_2,] |>
+#'                     colSums() |>
+#'                     matrix(nrow=1)
 #'
 #' # Test the null that the two vectors come from the same distribution
 #' # (i.e. the same news group)
 #'
-#' vecs2test %>% multinom.test()
+#' vecs2test |> multinom.test()
 #'
 #' # The above test likely produced a significant p-value meaning that we would
 #' # reject the null. However, the difference isn't very interesting. Instead,
 #' # test that the differences are within some neighborhood:
 #'
-#' vecs2test %>% multinom.neighborhood.test(delta=60)
+#' vecs2test |> multinom.neighborhood.test(delta=60)
 #'
 #'
 #' @export
