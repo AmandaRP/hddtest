@@ -36,10 +36,11 @@ Next for each of the two groups, sum the 200 term frequency vectors together. Th
 
 ```{r}
 vecs2Test[[1]] <- twoNewsGroups$sci.med[group_1, ] |>
-                                     colSums() |> matrix(nrow = 1)
+  colSums() |> 
+  matrix(nrow = 1)
 vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2, ] |>
-                                     colSums() |> matrix(nrow = 1)
-
+  colSums() |> 
+  matrix(nrow = 1)
 ```
 
 
