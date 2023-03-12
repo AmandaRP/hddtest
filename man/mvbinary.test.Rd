@@ -60,7 +60,7 @@ binData <- list(twoNewsGroups[[1]] > 0, twoNewsGroups[[2]] > 0)
 names(binData) <- names(twoNewsGroups)
 
 # Perform the test:
-result <- mvbinary.test(binData)
+result <- mvbinary.test(binData, numPerms = 10)
 result$pvalue
 
 # The following are equivalent to the previous test:
