@@ -56,8 +56,8 @@
 #' result$pvalue
 #'
 #' # The following are equivalent to the previous test:
-#' result <- mvbinary.test(binData[[1]], binData[[2]])
-#' result <- binData |> mvbinary.test()
+#' result <- mvbinary.test(binData[[1]], binData[[2]], numPerms = 100)
+#' result <- binData |> mvbinary.test(numPerms = 100)
 #'
 #' @export
 mvbinary.test <- function(x, y=NULL, numPerms=5000){
