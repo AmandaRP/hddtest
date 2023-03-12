@@ -13,7 +13,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-require(magrittr)
 load(file="~/hddtest/data/twoNewsGroups.rda")
 ```
 
@@ -36,10 +35,10 @@ group_2 <- sample(row_ids[-group_1], num_docs)
 Next for each of the two groups, sum the 200 term frequency vectors together. They will be the two multinomial vectors that we test.
 
 ```{r}
-vecs2Test[[1]] <- twoNewsGroups$sci.med[group_1, ] %>%
-                                     colSums() %>% matrix(nrow = 1)
-vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2, ] %>%
-                                     colSums() %>% matrix(nrow = 1)
+vecs2Test[[1]] <- twoNewsGroups$sci.med[group_1, ] |>
+                                     colSums() |> matrix(nrow = 1)
+vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2, ] |>
+                                     colSums() |> matrix(nrow = 1)
 
 ```
 
@@ -47,7 +46,7 @@ vecs2Test[[2]] <- twoNewsGroups$sci.med[group_2, ] %>%
 Now test the null hypothesis that the associated multinomial probability vectors are within some neighborhood, delta, of each other (against the alternative that they are not). We can then use this result to infer whether the sets of documents are likely from the same newsgroup.
 
 ```{r}
-vecs2Test %>% multinom.neighborhood.test(delta = 60)
+vecs2Test |> multinom.neighborhood.test(delta = 60)
 ```
 
 Here we fail to reject the null hypothesis using a delta of 60. How to choose the appropriate delta? The answer may come from subject matter expertise about the problem domain. Or you can run a simulation to gain insight. Below we define a simulation function.
@@ -60,16 +59,16 @@ simulation <- function(data, null_hyp, delta, reps = 10, num_docs = c(200, 200))
        row_ids <- 1:nrow(data[[2]])
        group_1 <- sample(row_ids, num_docs[2])
        group_2 <- sample(row_ids[-group_1], num_docs[2])
-       vecs2Test[[1]][i, ] <- data[[2]][group_1, ] %>% colSums()
-       vecs2Test[[2]][i, ] <- data[[2]][group_2, ] %>% colSums()
+       vecs2Test[[1]][i, ] <- data[[2]][group_1, ] |> colSums()
+       vecs2Test[[2]][i, ] <- data[[2]][group_2, ] |> colSums()
      }else{
-       vecs2Test[[1]][i, ] <- data[[1]][sample(1:nrow(data[[1]]), num_docs[1]), ] %>%
+       vecs2Test[[1]][i, ] <- data[[1]][sample(1:nrow(data[[1]]), num_docs[1]), ] |>
                                       colSums()
-       vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]), num_docs[2]), ] %>%
+       vecs2Test[[2]][i,] <- data[[2]][sample(1:nrow(data[[2]]), num_docs[2]), ] |>
                                       colSums()
      }
    }
-   result <- vecs2Test %>% multinom.neighborhood.test(delta = delta)
+   result <- vecs2Test |> multinom.neighborhood.test(delta = delta)
 } #end simulation function
 ```
 
