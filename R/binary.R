@@ -57,8 +57,7 @@
 #'
 #' # The following are equivalent to the previous test:
 #' result <- mvbinary.test(binData[[1]], binData[[2]])
-#' require(magrittr)
-#' result <- binData %>% mvbinary.test
+#' result <- binData |> mvbinary.test()
 #'
 #' @export
 mvbinary.test <- function(x,y=NULL,numPerms=5000){
@@ -73,7 +72,7 @@ mvbinary.test <- function(x,y=NULL,numPerms=5000){
   }
 
   #check that x and y are the same structures:
-  if(class( data[[1]] ) != class( data[[2]] )){
+  if(any(class( data[[1]] ) != class( data[[2]] ))){
     stop("The structures being compared must be the same class.")
   }
 
@@ -92,15 +91,21 @@ mvbinary.test <- function(x,y=NULL,numPerms=5000){
   #dimension:
   d <- ncol(data[[1]])
 
+  #Setup progress bar:
+  pb <- progress_bar$new(format = "permutation test [:bar] :current/:total (:percent)",
+                         total = numPerms,)
+
   #Permutation method to compute p-value:
   data <- rbind(data[[1]], data[[2]]) #combine into one dataframe
   data.perm <- list()
   perm.stats <- array(NA, dim = numPerms)
   for(i in 1:numPerms){
+    pb$tick(0)
     sortOrder <- sample(1:sum(n))
     data.perm[[1]] <- data[sortOrder[1:n[1]],]
     data.perm[[2]] <- data[sortOrder[(n[1]+1):(n[1]+n[2])],]
     perm.stats[i] <- get_stat(X = data.perm, n = n, d = d)$statistic
+    pb$tick()
   }
   pvalue <- mean(stat <= perm.stats) #Percentage of stats from perm method that were more extreme than observed statistic
 
