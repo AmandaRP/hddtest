@@ -32,8 +32,7 @@ data <- genMultinomialData(sample_size=1)
 #Perform test (the following three calls of multinom.test are equivalent):
 multinom.test(x=data[[1]], y=data[[2]])
 multinom.test(data)
-library(magrittr)
-data \%>\% multinom.test()
+data |> multinom.test()
 
 #Generate 1000 vectors from each of two different distributions:
 data <- genMultinomialData(null_hyp=FALSE,sample_size=1000)

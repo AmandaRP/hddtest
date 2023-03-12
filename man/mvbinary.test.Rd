@@ -65,8 +65,7 @@ result$pvalue
 
 # The following are equivalent to the previous test:
 result <- mvbinary.test(binData[[1]], binData[[2]])
-require(magrittr)
-result <- binData \%>\% mvbinary.test
+result <- binData |> mvbinary.test()
 
 }
 \seealso{

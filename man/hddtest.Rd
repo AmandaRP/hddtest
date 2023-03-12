@@ -3,7 +3,6 @@
 \docType{package}
 \name{hddtest}
 \alias{hddtest}
-\alias{hddtest-package}
 \title{hddtest: Two-sample hypothesis testing for high dimensional discrete disributions}
 \description{
 The hdd test package provides functionality for two-sample hypothesis testing
@@ -31,7 +30,7 @@ Multinomial Neighborhood Test
 
 \section{Authors}{
 
-Amanda Plunkett
+Amanda Peterson
 }
 
 \section{References}{

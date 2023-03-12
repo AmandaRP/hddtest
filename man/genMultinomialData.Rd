@@ -4,9 +4,18 @@
 \alias{genMultinomialData}
 \title{Generate multinomial data}
 \usage{
-genMultinomialData(null_hyp = TRUE, p = NULL, k = 2000, n = c(8000,
-  8000), sample_size = 30, expID = 1, alpha = 0.45, m = 1000,
-  numzero = 50, ...)
+genMultinomialData(
+  null_hyp = TRUE,
+  p = NULL,
+  k = 2000,
+  n = c(8000, 8000),
+  sample_size = 30,
+  expID = 1,
+  alpha = 0.45,
+  m = 1000,
+  numzero = 50,
+  ...
+)
 }
 \arguments{
 \item{null_hyp}{logical; if TRUE, generate data using the same distribution.

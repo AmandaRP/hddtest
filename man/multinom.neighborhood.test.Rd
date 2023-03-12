@@ -41,7 +41,6 @@ that the parameters are not considered different in practice. A neighborhood tes
 is useful in this situation.
 }
 \examples{
-require(magrittr)
 
 # Load the twoNewsGroups dataset
 
@@ -58,21 +57,21 @@ row_ids <- 1:nrow(twoNewsGroups$sci.med)
 group_1 <- sample(row_ids, num_docs)
 group_2 <- sample(row_ids[-group_1], num_docs)
 
-vecs2test[[1]] <- twoNewsGroups$sci.med[group_1,] \%>\%
-                                    colSums() \%>\% matrix(nrow=1)
-vecs2test[[2]] <- twoNewsGroups$sci.med[group_2,] \%>\%
-                                    colSums() \%>\% matrix(nrow=1)
+vecs2test[[1]] <- twoNewsGroups$sci.med[group_1,] |>
+                                    colSums() |> matrix(nrow=1)
+vecs2test[[2]] <- twoNewsGroups$sci.med[group_2,] |>
+                                    colSums() |> matrix(nrow=1)
 
 # Test the null that the two vectors come from the same distribution
 # (i.e. the same news group)
 
-vecs2test \%>\% multinom.test()
+vecs2test |> multinom.test()
 
 # The above test likely produced a significant p-value meaning that we would
 # reject the null. However, the difference isn't very interesting. Instead,
 # test that the differences are within some neighborhood:
 
-vecs2test \%>\% multinom.neighborhood.test(delta=60)
+vecs2test |> multinom.neighborhood.test(delta=60)
 
 
 }

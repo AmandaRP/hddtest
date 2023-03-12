@@ -4,12 +4,14 @@
 \name{twoNewsGroups}
 \alias{twoNewsGroups}
 \title{Document term matrix for documents sampled from two newsgroups}
-\format{A list of two matrices, each having dimension 594 by 16214.
+\format{
+A list of two matrices, each having dimension 594 by 16214.
 The (i,j) entry of each matrix is the count (term frequency) of
 the jth word in the ith document. The first matrix in the list
 contains 594 sampled documents from the rec.sport.baseball
 newsgroup. The second contains 594 sampled documents from the
-sci.med newsgroup.}
+sci.med newsgroup.
+}
 \source{
 \url{http://qwone.com/~jason/20Newsgroups/}
 }

@@ -4,8 +4,16 @@
 \alias{genMVBinaryData}
 \title{Generate multivariate binary data}
 \usage{
-genMVBinaryData(n = c(30, 30), d = 2000, null_hyp = TRUE, r = 0.3,
-  epsilon = 0.2, sigma = c(0.3, 0.1), gamma = 0.3, p0 = 0.1)
+genMVBinaryData(
+  n = c(30, 30),
+  d = 2000,
+  null_hyp = TRUE,
+  r = 0.3,
+  epsilon = 0.2,
+  sigma = c(0.3, 0.1),
+  gamma = 0.3,
+  p0 = 0.1
+)
 }
 \arguments{
 \item{n}{Vector of length 2 containing group size (i.e. number of samples) for
