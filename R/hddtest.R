@@ -18,7 +18,7 @@
 #' Multinomial Neighborhood Test
 #'
 #' @section Authors:
-#' Amanda Plunkett
+#' Amanda Peterson
 #'
 #' @section References:
 #' \itemize{
