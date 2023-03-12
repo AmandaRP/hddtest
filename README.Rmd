@@ -36,7 +36,7 @@ data <- genMultinomialData(null_hyp=FALSE, sample_size = 1)
 multinom.test(x=data[[1]], y=data[[2]])
 ```
 
-The last call can also be done using the `magrittr` forward pipe:
+The last call can also be done using a pipe:
 
 ```{r}
 data |> multinom.test()
