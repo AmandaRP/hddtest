@@ -25,7 +25,7 @@ twoNewsGroups
 
 \section{Vignettes}{
 
-Multinomial Neighborhood Test
+\code{vignette("multinomial-neighborhood-test-vignette")}
 }
 
 \section{Authors}{
