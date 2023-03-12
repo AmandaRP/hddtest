@@ -58,9 +58,11 @@ group_1 <- sample(row_ids, num_docs)
 group_2 <- sample(row_ids[-group_1], num_docs)
 
 vecs2test[[1]] <- twoNewsGroups$sci.med[group_1,] |>
-                                    colSums() |> matrix(nrow=1)
+                    colSums() |>
+                    matrix(nrow=1)
 vecs2test[[2]] <- twoNewsGroups$sci.med[group_2,] |>
-                                    colSums() |> matrix(nrow=1)
+                    colSums() |>
+                    matrix(nrow=1)
 
 # Test the null that the two vectors come from the same distribution
 # (i.e. the same news group)

@@ -39,6 +39,8 @@ probability vectors. See details below. Default value is (0.3,0.1).}
 
 \item{gamma}{Mean for dist of \eqn{Z_i ~ Ber(gamma)}. See details below.
 Default value is 0.3.}
+
+\item{p0}{See details below. Default is 0.1.}
 }
 \value{
 \code{X}: List of two n by d matrices each containing the generated datasets.
@@ -58,13 +60,13 @@ Randomly generate a list of two matrices containing multivariate binary data.
 The \eqn{(i,j)^{th}} entry of the \eqn{c^{th}} matrix is \eqn{X_{cij} = (1 - U_{ij})Y_{icj} + U_{ij}Z_{i}} where
 
 \itemize{
-  \item \eqn{U_{ij} ~ Ber(r)},
-  \item \eqn{Z_i ~ Ber(\gamma)},
-  \item \eqn{Y_{icj} ~ Ber(p_{jc})} where
+  \item \eqn{U_{ij} \sim Ber(r)},
+  \item \eqn{Z_i \sim Ber(\gamma)},
+  \item \eqn{Y_{icj} \sim Ber(p_{jc})} where
   \itemize{
     \item \eqn{p_{jc} = (1 - \beta)p_{o} + \beta h_c}
-    \item \eqn{\beta ~ Ber(\epsilon)}
-    \item \eqn{h_c ~ Uniform(0,\sigma_c)}
+    \item \eqn{\beta \sim Ber(\epsilon)}
+    \item \eqn{h_c \sim Uniform(0,\sigma_c)}
   }
 }
 }
