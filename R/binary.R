@@ -92,7 +92,7 @@ mvbinary.test <- function(x,y=NULL,numPerms=5000){
   d <- ncol(data[[1]])
 
   #Setup progress bar:
-  pb <- progress_bar$new(format = "permutation test [:bar] :current/:total (:percent)",
+  pb <- progress::progress_bar$new(format = "permutation test [:bar] :current/:total (:percent)",
                          total = numPerms,)
 
   #Permutation method to compute p-value:
