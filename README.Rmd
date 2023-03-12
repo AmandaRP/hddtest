@@ -46,12 +46,12 @@ data |> multinom.test()
 
 See help documentation on each of the following via `?functionname`
 
-* multinom.test
-* multinom.neighborhood.test
-* genMultinomialData
-* mvbinary.test
-* genMVBinaryData
-* twoNewsGroups
+* `multinom.test`
+* `multinom.neighborhood.test`
+* `genMultinomialData`
+* `mvbinary.test`
+* `genMVBinaryData`
+* `twoNewsGroups`
 
 
 ## Vignette
