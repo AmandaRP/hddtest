@@ -17,3 +17,4 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+URL: https://amandarp.github.io/hddtest/
