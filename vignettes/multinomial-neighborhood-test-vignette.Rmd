@@ -13,7 +13,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-load(file="~/hddtest/data/twoNewsGroups.rda")
+
+#load(file=here("data/twoNewsGroups.rda"))
 ```
 
 
