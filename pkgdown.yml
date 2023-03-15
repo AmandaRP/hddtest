@@ -1,0 +1,10 @@
+pandoc: 2.19.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  multinomial-neighborhood-test-vignette: multinomial-neighborhood-test-vignette.html
+last_built: 2023-03-15T23:25Z
+urls:
+  reference: https://amandarp.github.io/hddtest/reference
+  article: https://amandarp.github.io/hddtest/articles
+
